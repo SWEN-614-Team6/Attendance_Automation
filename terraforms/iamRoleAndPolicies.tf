@@ -1,68 +1,128 @@
 
-#Creating an IAM role
-resource "aws_iam_role" "swen614-lambda-role" {
-    name = "SWEN614-lambda-role"
+#Creating an IAM role for Lambda Use case
+resource "aws_iam_role" "swen614_lambda_role" {
+name               = "lambda_execution_role"
 assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "sts:AssumeRole",
+      "Effect": "Allow",
       "Principal": {
         "Service": "lambda.amazonaws.com"
       },
-      "Effect": "Allow",
-      "Sid": ""
+      "Action": "sts:AssumeRole"
     }
   ]
 }
 EOF
-  
 }
 
-#Attaching AWS lambda full access to the IAM role
-resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
-  role        = aws_iam_role.swen614-lambda-role.name
-  policy_arn  = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+resource "aws_iam_policy" "swen614_cloudwatch_policy" {
+  name        = "cloudwatch_policy"
+  description = "Allows logging to CloudWatch Logs"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
-#Converting the python file into zip to upload on 
-
-locals {
-  python_files = replace(path.cwd,"terraforms","Lambda_Functions")
+resource "aws_iam_policy" "swen614_s3_policy" {
+  name        = "s3_policy"
+  description = "Allows access to S3 buckets"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
-data "archive_file" "zip_the_python_code" {
-  for_each = fileset(local.python_files,"*.py")
-  type = "zip"
-  source_dir = "${local.python_files}" 
-  output_path = "${local.python_files}/${replace(each.value,".py","")}.zip" 
+resource "aws_iam_policy" "swen614_dynamodb_policy" {
+  name        = "dynamodb_policy"
+  description = "Allows access to DynamoDB tables"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
-resource "aws_lambda_function" "student_authentication" {
- filename                       = "${local.python_files}/student_authentication.zip"
- function_name                  = "student-authentication"
- role                           = aws_iam_role.swen614-lambda-role.arn
- handler                        = "student_authentication.lambda_handler"
- runtime                        = "python3.8"
- depends_on                     = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
-
-# filename         = "${local.python_files}/student_authentication.zip"  # Path to the ZIP file containing Python code
-#   function_name    = "student-authentication"
-#   handler          = "student_authentication.lambda_handler"
-#   runtime          = "python3.8"
-#   source_code_hash = filebase64sha256(data.archive_file.zip_the_python_code[each.key].output_path)
-#   role             = aws_iam_role.swen614-lambda-role.arn
-#   depends_on       = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
-
-
-#  environment {
-#     variables = {
-#       DYNAMODB_TABLE_NAME = "studentsdemo2"
-#       BUCKET_NAME         = "swen614-dataset"
-#       REKOGNITION_REGION = "us-east-1"
-#       COLLECTION_ID      = "mycollection2"
-#       # Add other environment variables here if needed
-#     }
-#   }
+resource "aws_iam_policy" "swen614_rekognition_policy" {
+  name        = "rekognition_policy"
+  description = "Allows access to Rekognition service"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DetectLabels"
+      ],
+      "Resource": "*"
+    }
+  ]
+} 
+EOF
 }
+
+resource "aws_iam_role_policy_attachment" "swen614_cloudwatch_attach" {
+  role       = aws_iam_role.swen614_lambda_role.name
+  policy_arn = aws_iam_policy.swen614_cloudwatch_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "s3_attach" {
+  role       = aws_iam_role.swen614_lambda_role.name
+  policy_arn = aws_iam_policy.swen614_s3_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "dynamodb_attach" {
+  role       = aws_iam_role.swen614_lambda_role.name
+  policy_arn = aws_iam_policy.swen614_dynamodb_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "rekognition_attach" {
+  role       = aws_iam_role.swen614_lambda_role.name
+  policy_arn = aws_iam_policy.swen614_rekognition_policy.arn
+}
+
+
+# #Attaching AWS lambda full access to the IAM role
+# resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
+#   role        = aws_iam_role.swen614-lambda-role.name
+#   policy_arn  = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+# }

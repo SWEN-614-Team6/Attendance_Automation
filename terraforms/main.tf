@@ -27,12 +27,22 @@ output "new_path_output" {
 }
 
 
-#Creating s3 bucket to upload the dataset files in a s3 bucket.
+#Creating s3 bucket to upload the student image in a s3 bucket.
 resource "aws_s3_bucket" "swen614-dataset" {
-  bucket = "swen614-dataset"
+  bucket = "swen614-student-face-upload"
 
   tags = {
-    Name        = "SWEN614-Dataset"
+    Name        = "SWEN614-Student-face"
+    Environment = "Dev"
+  }
+}
+
+#Creating bucket for student attendace authentication
+resource "aws_s3_bucket" "swen614-student-authentication" {
+  bucket = "student-photo-validation-bucket"
+
+  tags = {
+    Name        = "SWEN614-student-authentication-bucket"
     Environment = "Dev"
   }
 }
