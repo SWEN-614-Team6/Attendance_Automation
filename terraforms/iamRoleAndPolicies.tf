@@ -126,3 +126,48 @@ resource "aws_iam_role_policy_attachment" "rekognition_attach" {
 #   role        = aws_iam_role.swen614-lambda-role.name
 #   policy_arn  = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
 # }
+
+
+
+# IAM role for API Gateway for API to add image in new_student_registration_tf
+resource "aws_iam_role" "role_for_api_gateway_registration" {
+  name = "role_for_api_gateway_registration"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "apigateway.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+# Attach AmazonAPIGatewayPushToCloudWatchLogs policy
+resource "aws_iam_policy_attachment" "api_gateway_registration_cloudwatch_logs" {
+  name       = "AmazonAPIGatewayPushToCloudWatchLogs"
+  roles      = [aws_iam_role.role_for_api_gateway_registration.name]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+# Inline policy for PutObject action on 'new_student_registration_tf' S3 bucket
+resource "aws_iam_role_policy" "s3_putobject_policy_reg" {
+#   name   = "s3_putobject_policy_reg"
+  role   = aws_iam_role.role_for_api_gateway_registration.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::new_student_registration_tf/*"
+      }
+    ]
+  })
+}
