@@ -13,7 +13,7 @@ data "archive_file" "zip_the_python_code" {
 resource "aws_lambda_function" "student_registration" {
  filename                       = "${local.python_files}/Function-1/student_registration_tf.zip"
  function_name                  = "student-registration_tf"
- role                           = aws_iam_role.swen614_lambda_role.arn
+ role                           = aws_iam_role.role_for_lamda_functions_tf.arn
  handler                        = "student_registration_tf.lambda_handler"
  runtime                        = "python3.8"
  memory_size = 500

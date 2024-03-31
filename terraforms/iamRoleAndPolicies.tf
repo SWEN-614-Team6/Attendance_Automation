@@ -1,6 +1,6 @@
 
 #Creating an IAM role for Lambda Use case
-resource "aws_iam_role" "swen614_lambda_role" {
+resource "aws_iam_role" "role_for_lamda_functions_tf" {
 name               = "lambda_execution_role"
 assume_role_policy = <<EOF
 {
@@ -101,22 +101,22 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "swen614_cloudwatch_attach" {
-  role       = aws_iam_role.swen614_lambda_role.name
+  role       = aws_iam_role.role_for_lamda_functions_tf.name
   policy_arn = aws_iam_policy.swen614_cloudwatch_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "s3_attach" {
-  role       = aws_iam_role.swen614_lambda_role.name
+  role       = aws_iam_role.role_for_lamda_functions_tf.name
   policy_arn = aws_iam_policy.swen614_s3_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "dynamodb_attach" {
-  role       = aws_iam_role.swen614_lambda_role.name
+  role       = aws_iam_role.role_for_lamda_functions_tf.name
   policy_arn = aws_iam_policy.swen614_dynamodb_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "rekognition_attach" {
-  role       = aws_iam_role.swen614_lambda_role.name
+  role       = aws_iam_role.role_for_lamda_functions_tf.name
   policy_arn = aws_iam_policy.swen614_rekognition_policy.arn
 }
 
