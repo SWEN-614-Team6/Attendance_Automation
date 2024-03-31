@@ -3,7 +3,7 @@ import boto3
 s3 = boto3.client('s3')
 rekognition = boto3.client('rekognition', region_name = 'us-east-1')
 
-dynamodbTableName = 'studentsdemo2'
+dynamodbTableName = 'class_student_tf'
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
@@ -38,7 +38,7 @@ def index_employee_image(bucket, key):
                 'Name' : key
             }
         },
-        CollectionId = "mycollection2"
+        CollectionId = "studentsImage_tf"
     )
 
     return response
