@@ -1,6 +1,11 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Form, FormGroup, Label, Input } from 'reactstrap';
 import React from 'react';
+import './App.css';
 import { useState, useRef } from 'react';
+import logo from './image/logo.png';
+import registrationImg from './image/registration.png';
+import addAttendanceImg from './image/addAttendance.png';
+
 const uuid = require('uuid');
 
 function App() {
@@ -109,13 +114,31 @@ function App() {
 
   return (
    <div>
+    <div className='header'>
+      <img src = {logo} alt='Logo'/>
+      <h1>Attendance Automation</h1>
+    </div>
       
-      <Button color="primary" onClick={toggleRegisterModal} >Add Student</Button>
-       
-      <Button color="primary" onClick={toggleUpdateModal}>Update Attendance</Button>
+    <h2>Welcome, Admin!!</h2>
+    <div className='buttons'>
+      <div className='b'>
+          <Button className="circular-button" onClick={toggleRegisterModal}> 
+            <img src= {registrationImg} alt='registration'/>
+          </Button>
+          <div>Registration</div>
+      </div>
+      <div className='b'>
+          <Button className="circular-button" onClick={toggleUpdateModal}>
+            <img src= {addAttendanceImg} alt='addAttandance'/>
+          </Button>
+          <div>Mark Attendance</div>
+      </div>
+    </div>
+    
+      
 
       <Modal isOpen={updateModal} toggle={toggleUpdateModal}>
-        <ModalHeader toggle={toggleUpdateModal}>Upload Attendance</ModalHeader>
+        <ModalHeader color='black' toggle={toggleUpdateModal}>Upload Attendance</ModalHeader>
         
         <ModalBody>
           <Form onSubmit={handleUpdateSubmit}>
