@@ -6,16 +6,18 @@ locals {
 
 data "archive_file" "zip_the_python_code" {
   type = "zip"
-  source_dir = "${local.python_files}" 
-  output_path = "${local.python_files}/student_registration.zip" 
+  source_dir = "${local.python_files}/Function-1/"
+  output_path = "${local.python_files}/Function-1/student_registration_tf.zip" 
 }
 
 resource "aws_lambda_function" "student_registration" {
- filename                       = "${local.python_files}/student_registration.zip"
- function_name                  = "student-registration"
+ filename                       = "${local.python_files}/Function-1/student_registration_tf.zip"
+ function_name                  = "student-registration_tf"
  role                           = aws_iam_role.swen614_lambda_role.arn
- handler                        = "student_registration.lambda_handler"
+ handler                        = "student_registration_tf.lambda_handler"
  runtime                        = "python3.8"
+ memory_size = 500
+ timeout = 50
  //depends_on                     = [aws_iam_role_policy_attachment.dynamodb_attach, aws_iam_role_policy_attachment.rekognition_attach, aws_iam_role_policy_attachment.s3_attach]
 
 # filename         = "${local.python_files}/student_authentication.zip"  # Path to the ZIP file containing Python code
