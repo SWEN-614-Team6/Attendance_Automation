@@ -575,3 +575,23 @@ resource "aws_api_gateway_integration_response" "options_student_identify_integr
   }
 }
 
+
+#deployment of API
+resource "aws_api_gateway_deployment" "deployment" {
+  depends_on = [
+    aws_api_gateway_integration.s3_integration,
+    aws_api_gateway_integration.options_bucket_integration,
+    aws_api_gateway_integration.options_filename_integration,
+
+    aws_api_gateway_integration.api2_s3_integration,
+    aws_api_gateway_integration.api2_options_class_integration,
+    aws_api_gateway_integration.api2_options_bucket_integration,
+    aws_api_gateway_integration.api2_options_filename_integration,
+
+    aws_api_gateway_integration.student_identify_integration, 
+    aws_api_gateway_integration.options_student_identify_integration
+    ]
+
+  rest_api_id = aws_api_gateway_rest_api.ams_apis_tf.id
+  stage_name  = "dev" 
+}
