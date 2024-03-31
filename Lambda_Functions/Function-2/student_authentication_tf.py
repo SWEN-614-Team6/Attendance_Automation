@@ -15,12 +15,12 @@ from PIL import Image
 s3 = boto3.client('s3')
 rekognition = boto3.client('rekognition', region_name = 'us-east-1')
 
-dynamodbTableName = 'studentsdemo2'
+dynamodbTableName = 'class_student_tf'
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 studentTable = dynamodb.Table(dynamodbTableName)
 bucketName = 'class-photos-bucket'
 
-dynamodbTableNameforRecords = 'students_records'
+dynamodbTableNameforRecords = 'attendance_records_tf'
 studentsRecordsTable = dynamodb.Table(dynamodbTableNameforRecords)
 
 
@@ -66,7 +66,7 @@ def detect_and_search_faces(image_bytes):
       cropped_image_bytes = io.BytesIO()  # Create a buffer for cropped image
       cropped_image.save(cropped_image_bytes, format='JPEG')  # Save to buffer
       search_response = rekognition.search_faces_by_image(
-          CollectionId='mycollection2',
+          CollectionId='studentsImage_tf',
           Image={
               'Bytes': cropped_image_bytes.getvalue()
           }
