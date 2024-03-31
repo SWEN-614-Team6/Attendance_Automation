@@ -171,3 +171,46 @@ resource "aws_iam_role_policy" "s3_putobject_policy_reg" {
     ]
   })
 }
+
+# IAM Role for API Gateway for API to add image in class_images_tf
+resource "aws_iam_role" "role_for_api_gateway_authentication" {
+  name = "role_for_api_gateway_authentication"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "apigateway.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+# Attach AmazonAPIGatewayPushToCloudWatchLogs policy
+resource "aws_iam_policy_attachment" "api_gateway_cloudwatch_logs" {
+  name       = "AmazonAPIGatewayPushToCloudWatchLogs"
+  roles      = [aws_iam_role.role_for_api_gateway_authentication.name]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+# Inline policy for PutObject action on 'class_images_tf' S3 bucket
+resource "aws_iam_role_policy" "s3_putobject_policy" {
+  name   = "s3_putobject_policy"
+  role   = aws_iam_role.role_for_api_gateway_authentication.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::class_images_tf/*"
+      }
+    ]
+  })
+}
