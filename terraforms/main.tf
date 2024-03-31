@@ -1,16 +1,6 @@
-# terraform {
-#   required_providers {
-#     aws = {
-#       source  = "hashicorp/aws"
-#       version = "~> 5.0"
-#     }
-#   }
-# }
 
 provider "aws" {
   region = "us-east-1"
-  # access_key = "access-key"
-  # secret_key = "secret-key"
 }
 
 
@@ -29,22 +19,22 @@ output "new_path_output" {
 
 #Creating s3 bucket to upload the student image in a s3 bucket.
 resource "aws_s3_bucket" "new_student_registration_tf" {
-  bucket = "new_student_registration_tf"
+  bucket = "new-student-registration-tf-ac"
   force_destroy = true
 
   tags = {
-    Name        = "new_student_registration_tf"
+    Name        = "new-student-registration-tf-ac"
     Environment = "Dev"
   }
 }
 
 #Creating bucket for student attendace authentication
 resource "aws_s3_bucket" "class_images_tf" {
-  bucket = "class_images_tf"
+  bucket = "class-images-tf-ac"
    force_destroy = true
 
   tags = {
-    Name        = "class_images_tf"
+    Name        = "class-images-tf-ac"
     Environment = "Dev"
   }
 }
