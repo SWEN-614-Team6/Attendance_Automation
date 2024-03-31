@@ -18,7 +18,7 @@ rekognition = boto3.client('rekognition', region_name = 'us-east-1')
 dynamodbTableName = 'class_student_tf'
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 studentTable = dynamodb.Table(dynamodbTableName)
-bucketName = 'class-photos-bucket'
+bucketName = 'class-images-tf'
 
 dynamodbTableNameforRecords = 'attendance_records_tf'
 studentsRecordsTable = dynamodb.Table(dynamodbTableNameforRecords)
@@ -141,8 +141,8 @@ def buildResponse(statusCode, body=None):
         'statusCode' : statusCode,
         'headers': {
             'Content-Type' : 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Methods': 'OPTIONS,GET'
+            'Access-Control-Allow-Origin': '*'
+            # 'Access-Control-Allow-Methods': 'OPTIONS,GET'
         }
     }
     if body is not None:
