@@ -166,7 +166,7 @@ resource "aws_iam_role_policy" "s3_putobject_policy_reg" {
       {
         Effect   = "Allow"
         Action   = "s3:PutObject"
-        Resource = "arn:aws:s3:::new_student_registration_tf/*"
+        Resource = "arn:aws:s3:::new-student-registration-tf/*"
       }
     ]
   })
@@ -209,7 +209,7 @@ resource "aws_iam_role_policy" "s3_putobject_policy" {
       {
         Effect   = "Allow"
         Action   = "s3:PutObject"
-        Resource = "arn:aws:s3:::class_images_tf/*"
+        Resource = "arn:aws:s3:::class-images-tf/*"
       }
     ]
   })
