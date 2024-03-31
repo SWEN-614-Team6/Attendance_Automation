@@ -19,22 +19,22 @@ output "new_path_output" {
 
 #Creating s3 bucket to upload the student image in a s3 bucket.
 resource "aws_s3_bucket" "new_student_registration_tf" {
-  bucket = "new-student-registration-tf-ac"
+  bucket = "new_student_registration_tf"
   force_destroy = true
 
   tags = {
-    Name        = "new-student-registration-tf-ac"
+    Name        = "new_student_registration_tf"
     Environment = "Dev"
   }
 }
 
 #Creating bucket for student attendace authentication
 resource "aws_s3_bucket" "class_images_tf" {
-  bucket = "class-images-tf-ac"
+  bucket = "class_images_tf"
    force_destroy = true
 
   tags = {
-    Name        = "class-images-tf-ac"
+    Name        = "class_images_tf"
     Environment = "Dev"
   }
 }
