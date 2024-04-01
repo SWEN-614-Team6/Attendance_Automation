@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import logo from './image/logo.png';
 import registrationImg from './image/registration.png';
 import addAttendanceImg from './image/addAttendance.png';
+import myfile from './output.json';
 
 // import BASE_URL from './config'; 
 
@@ -30,7 +31,7 @@ function App() {
   useEffect(() => {
 
     // fetch('/path/to/terraform_output.json')
-    fetch('../../terraforms/terraform_output.json')
+    fetch(myfile)
     .then(response => response.json())
     .then(data => {
       // const apiGatewayUrl = data.api_gateway_url;
