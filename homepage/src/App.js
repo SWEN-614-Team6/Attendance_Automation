@@ -52,6 +52,8 @@ function App() {
   const toggleUpdateModal = () => {
     setUpdateModal(!updateModal);
     settext_message('');
+    setSelectedDate('');
+    setstudentlist([]);
   }
 
   const toggleRegisterModal = () => {
