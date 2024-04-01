@@ -21,17 +21,13 @@ EOF
 resource "aws_iam_policy" "swen614_cloudwatch_policy" {
   name        = "cloudwatch_policy"
   description = "Allows logging to CloudWatch Logs"
-  policy      = <<EOF
+   policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
+      "Action": "logs:*",
       "Resource": "*"
     }
   ]
@@ -42,16 +38,13 @@ EOF
 resource "aws_iam_policy" "swen614_s3_policy" {
   name        = "s3_policy"
   description = "Allows access to S3 buckets"
-  policy      = <<EOF
+ policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject"
-      ],
+      "Action": "s3:*",
       "Resource": "*"
     }
   ]
@@ -62,18 +55,13 @@ EOF
 resource "aws_iam_policy" "swen614_dynamodb_policy" {
   name        = "dynamodb_policy"
   description = "Allows access to DynamoDB tables"
-  policy      = <<EOF
+   policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:UpdateItem",
-        "dynamodb:DeleteItem"
-      ],
+      "Action": "dynamodb:*",
       "Resource": "*"
     }
   ]
@@ -90,13 +78,11 @@ resource "aws_iam_policy" "swen614_rekognition_policy" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "rekognition:DetectLabels"
-      ],
+      "Action": "rekognition:*",
       "Resource": "*"
     }
   ]
-} 
+}
 EOF
 }
 

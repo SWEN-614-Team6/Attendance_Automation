@@ -473,8 +473,8 @@ resource "aws_api_gateway_integration" "student_identify_integration" {
   integration_http_method = "POST"
   type = "AWS_PROXY" 
   # Change the following
-   uri   = aws_lambda_function.student_registration.invoke_arn
-  # uri   = aws_lambda_function.terraform_lambda_func_authentication.invoke_arn
+  #  uri   = aws_lambda_function.student_registration.invoke_arn
+ uri   = aws_lambda_function.terraform_lambda_func_authentication.invoke_arn
 
   # credentials = aws_iam_role.lambda_role.arn
 }
@@ -499,8 +499,8 @@ resource "aws_lambda_permission" "apigw" {
   action        = "lambda:InvokeFunction"
  
   #Change the following
-  function_name = aws_lambda_function.student_registration.arn
-  # function_name = aws_lambda_function.terraform_lambda_func_authentication.arn
+  # function_name = aws_lambda_function.student_registration.arn
+   function_name = aws_lambda_function.terraform_lambda_func_authentication.arn
   principal     = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_rest_api.ams_apis_tf.execution_arn}/*/*"
 }
