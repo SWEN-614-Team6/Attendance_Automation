@@ -1,10 +1,12 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Form, FormGroup, Label, Input } from 'reactstrap';
 import React from 'react';
 import './App.css';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import logo from './image/logo.png';
 import registrationImg from './image/registration.png';
 import addAttendanceImg from './image/addAttendance.png';
+
+// import BASE_URL from './config'; 
 
 const uuid = require('uuid');
 
@@ -22,6 +24,34 @@ function App() {
   const [studentlist, setstudentlist] = useState([]);
 
   const [selectedDate, setSelectedDate] = useState('');
+  const [BASE_URL, setBASE_URL] = useState(null);
+
+
+  useEffect(() => {
+
+    // fetch('/path/to/terraform_output.json')
+    fetch('../../terraforms/terraform_output.json')
+    .then(response => response.json())
+    .then(data => {
+      // const apiGatewayUrl = data.api_gateway_url;
+      console.log("my url:");
+      console.log(data);
+      setBASE_URL(data); // Set initial data in state
+    })
+    .catch(error => console.error('Error fetching Terraform output:', error));
+
+    // fetch(BASE_URL + 'myurl')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setInitialData(data); // Set initial data in state
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching initial data:', error);
+    //   });
+
+
+  }, []); // Empty dependency array ensures effect runs only once
+
 
 
   const toggleUpdateModal = () => {
@@ -35,6 +65,7 @@ function App() {
 
   }
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -46,7 +77,8 @@ function App() {
 
  const visitorImageName = `${firstName}_${lastName}.${fileExtension}`;
 
-    fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
+    // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
+    fetch(`${BASE_URL}new-student-registration-tf/${visitorImageName}`, { 
     method : 'PUT',
     headers :  {
      // 'Content-Type' : 'image/jpeg'
@@ -65,11 +97,12 @@ function App() {
    const visitorImageName = uuid.v4();
     
    const newfileExtension = classImage.name.split('.').pop();
-   fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/class/class-photos-bucket/${visitorImageName}`, {
-    method : 'PUT',
+  //  fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/class/class-photos-bucket/${visitorImageName}`, {
+    fetch(`${BASE_URL}class/class-images-tf/${visitorImageName}`, { // Construct the API endpoint using the base URL
+   method : 'PUT',
     headers :  {
       'Content-Type': `image/${newfileExtension}`,
-      'Origin': 'http://localhost:3000'
+      // 'Origin': 'http://localhost:3000'
     },
     body : classImage
    }).then(async () => {
@@ -94,16 +127,20 @@ function App() {
   
   async function authenticate(visitorImageName, newfileExtension)
   {
-   const requestUrl = 'https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/studentidentify?'+ new URLSearchParams({
-     objectKey : `${visitorImageName}`,
-     date_of_attendance : `${selectedDate}`
-   })
+  //   const requestUrl = 'https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/studentidentify?'+ new URLSearchParams({
+  //    objectKey : `${visitorImageName}`,
+  //    date_of_attendance : `${selectedDate}`
+  //  })
+  const requestUrl = `${BASE_URL}studentidentify?${new URLSearchParams({ // Construct the API endpoint using the base URL
+    objectKey: `${visitorImageName}`,
+    date_of_attendance: `${selectedDate}`
+  })}`;
    return await fetch(requestUrl, {
      method : 'GET',
      headers : {
        'Accept' :'application/json',
-       'Content-Type' : 'application/json',
-       'Origin': 'http://localhost:3000'
+       'Content-Type' : 'application/json'
+      //  'Origin': 'http://localhost:3000'
      }
    }).then(response => response.json())
    .then ((data) => {
