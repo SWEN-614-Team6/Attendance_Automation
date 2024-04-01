@@ -75,7 +75,7 @@ function App() {
  const visitorImageName = `${firstName}_${lastName}.${fileExtension}`;
 
     // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
-    fetch(`${BASE_URL}new-student-registration-tf/${visitorImageName}`, { 
+    fetch(`${BASE_URL}/new-student-registration-tf/${visitorImageName}`, { 
     method : 'PUT',
     headers :  {
      // 'Content-Type' : 'image/jpeg'
@@ -95,7 +95,7 @@ function App() {
     
    const newfileExtension = classImage.name.split('.').pop();
   //  fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/class/class-photos-bucket/${visitorImageName}`, {
-    fetch(`${BASE_URL}class/class-images-tf/${visitorImageName}`, { // Construct the API endpoint using the base URL
+    fetch(`${BASE_URL}/class/class-images-tf/${visitorImageName}`, { // Construct the API endpoint using the base URL
    method : 'PUT',
     headers :  {
       'Content-Type': `image/${newfileExtension}`,
@@ -128,7 +128,7 @@ function App() {
   //    objectKey : `${visitorImageName}`,
   //    date_of_attendance : `${selectedDate}`
   //  })
-  const requestUrl = `${BASE_URL}studentidentify?${new URLSearchParams({ // Construct the API endpoint using the base URL
+  const requestUrl = `${BASE_URL}/studentidentify?${new URLSearchParams({ // Construct the API endpoint using the base URL
     objectKey: `${visitorImageName}`,
     date_of_attendance: `${selectedDate}`
   })}`;
