@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import logo from './image/logo.png';
 import registrationImg from './image/registration.png';
 import addAttendanceImg from './image/addAttendance.png';
-import myfile from './output.json';
+import myfile from './output.txt';
 
 // import BASE_URL from './config'; 
 
@@ -27,31 +27,25 @@ function App() {
   const [selectedDate, setSelectedDate] = useState('');
   const [BASE_URL, setBASE_URL] = useState(null);
 
-
   useEffect(() => {
+    const fetchJsonData = async () => {
+      try {
+        const response = await fetch(myfile);
+        if (!response.ok) {
+          throw new Error('Failed to fetch JSON');
+        }
+        const data = await response.json();
+        setBASE_URL(data.API_invoke_url.value);
+        console.log(data.API_invoke_url.value);
+      } catch (error) {
+        console.error('Error fetching JSON:', error);
+      }
+    };
 
-    // fetch('/path/to/terraform_output.json')
-    fetch(myfile)
-    .then(response => response.json())
-    .then(data => {
-      // const apiGatewayUrl = data.api_gateway_url;
-      console.log("my url:");
-      console.log(data);
-      setBASE_URL(data); // Set initial data in state
-    })
-    .catch(error => console.error('Error fetching Terraform output:', error));
-
-    // fetch(BASE_URL + 'myurl')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     setInitialData(data); // Set initial data in state
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching initial data:', error);
-    //   });
+    fetchJsonData();
+  }, []);
 
 
-  }, []); // Empty dependency array ensures effect runs only once
 
 
 
