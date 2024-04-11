@@ -68,11 +68,12 @@ function Home() {
 
   const firstName = event.target.first_name.value;
   const lastName = event.target.last_name.value;
+  const emailId = event.target.email_id.value;
   const fileExtension = image.name.split('.').pop();
   event.target.first_name.value = '';
   event.target.last_name.value = '';
 
- const visitorImageName = `${firstName}_${lastName}.${fileExtension}`;
+ const visitorImageName = `${firstName}_${lastName}_${emailId}.${fileExtension}`;
 
     // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
     fetch(`${BASE_URL}/new-student-registration-tf/${visitorImageName}`, { 
@@ -216,6 +217,11 @@ function Home() {
             <FormGroup>
               <Label for="last_name">Last Name</Label>
               <Input type="text" name="last_name" id="last_name" placeholder="Enter last name" />
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="last_name">Email ID</Label>
+              <Input type="text" name="email_id" id="email_id" placeholder="Enter valid RIT email ID" />
             </FormGroup>
 
             <FormGroup>
