@@ -121,19 +121,28 @@ def lambda_handler(event,context):
               'lastName': item['lastName']
           })
           attendance_list.append(item['firstName']+' '+item['lastName'])
-
+          
+    all_data_response = studentTable.scan()
+    print("All table value responses :")
+    print(all_data_response)
+    
+    unmatched_students = [item for item in all_data_response['Items'] if item['rekognitionId'] not in face_ids]
+    print("Unmatched datasss")
+    print(unmatched_students)
+    
     print(results)
     print('Attendance List:')
     print(attendance_list)
 
     if len(results) == 0:
-        return buildResponse(403, {'status': 'Fail','message':'No match found!','mylist':[]})
+        return buildResponse(403, {'status': 'Fail','message':'No match found!','mylist':[],'absent_students':[]})
     else:
-        add_to_table(date_of_attendance,attendance_list)
+        add_to_table(date_of_attendance,attendance_list,unmatched_students)
         return buildResponse(200,{
                 'status': 'Success',
                 'message' : 'Following students attendance updated',
-                'mylist' : results
+                'mylist' : results,
+                'absent_students' : unmatched_students
             })
             
 def buildResponse(statusCode, body=None):
@@ -149,12 +158,13 @@ def buildResponse(statusCode, body=None):
         response['body'] = json.dumps(body)
     return response
 
-def add_to_table(date_of_attendance, attendance_list):
+def add_to_table(date_of_attendance, attendance_list, unmatched_students):
     studentsRecordsTable.put_item(
         Item = {
             'date' : date_of_attendance,
             'classroom' : 'SWEN-514/614',
             'total_students' : len(attendance_list),
-            'present_students' : attendance_list
+            'present_students' : attendance_list,
+            'absent_students' : unmatched_students
         }
     )
