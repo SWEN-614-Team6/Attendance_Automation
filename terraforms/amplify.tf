@@ -2,6 +2,10 @@ resource "aws_amplify_app" "my_app" {
   name       = "Attendance_Automation"
   repository = "https://github.com/SWEN-614-Team6/Attendance_Automation"
   access_token = var.token
+  environment_variables = {
+    variable_name = "REACT_APP_API_URL"
+    value         = aws_api_gateway_deployment.deployment.invoke_url
+  }
   # Configure the branch that Amplify will use
   build_spec = <<-EOT
       version: 1
@@ -22,6 +26,8 @@ resource "aws_amplify_app" "my_app" {
           paths: 
             - node_modules/**/*
     EOT
+
+  
  
 }
 resource "aws_amplify_branch" "amplify_branch" {
