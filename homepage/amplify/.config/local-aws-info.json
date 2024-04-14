@@ -1,0 +1,12 @@
+{
+  "dev": {
+    "configLevel": "project",
+    "useProfile": true,
+    "profileName": "default"
+  },
+  "acdev": {
+    "configLevel": "project",
+    "useProfile": true,
+    "profileName": "default"
+  }
+}

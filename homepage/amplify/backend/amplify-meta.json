@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-swen614project-acdev-0d686-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335472700:role/amplify-swen614project-acdev-0d686-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335472700:role/amplify-swen614project-acdev-0d686-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-swen614project-acdev-0d686-deployment",
+      "UnauthRoleName": "amplify-swen614project-acdev-0d686-unauthRole",
+      "StackName": "amplify-swen614project-acdev-0d686",
+      "StackId": "arn:aws:cloudformation:us-east-1:730335472700:stack/amplify-swen614project-acdev-0d686/ac3af9b0-fa83-11ee-8748-0affedd7cf69",
+      "AmplifyAppId": "d330nxznd9rxf8"
+    }
+  },
+  "auth": {
+    "swen614project1c0745a9": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-swen614project-acdev-0d686-deployment/amplify-cfn-templates/auth/swen614project1c0745a9-cloudformation-template.json",
+        "logicalId": "authswen614project1c0745a9"
+      },
+      "lastPushTimeStamp": "2024-04-14T17:32:44.617Z",
+      "output": {
+        "UserPoolId": "us-east-1_U03MOWSJS",
+        "AppClientIDWeb": "6foh5gooambs5imbnmkluo38gl",
+        "AppClientID": "5391993rapbam570l7trh9ca7q",
+        "IdentityPoolId": "us-east-1:3c8e65c2-a1c8-4e2f-acdc-6f37cf906952",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:730335472700:userpool/us-east-1_U03MOWSJS",
+        "IdentityPoolName": "swen614project1c0745a9_identitypool_1c0745a9__acdev",
+        "UserPoolName": "swen614project1c0745a9_userpool_1c0745a9"
+      },
+      "lastPushDirHash": "ixsM7Lu0mk3cElaqzP2u5JTDmFM="
+    }
+  }
+}

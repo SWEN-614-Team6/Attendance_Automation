@@ -16,5 +16,23 @@
         "swen614project1c0745a9": {}
       }
     }
+  },
+  "acdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-swen614project-acdev-0d686-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335472700:role/amplify-swen614project-acdev-0d686-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335472700:role/amplify-swen614project-acdev-0d686-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-swen614project-acdev-0d686-deployment",
+      "UnauthRoleName": "amplify-swen614project-acdev-0d686-unauthRole",
+      "StackName": "amplify-swen614project-acdev-0d686",
+      "StackId": "arn:aws:cloudformation:us-east-1:730335472700:stack/amplify-swen614project-acdev-0d686/ac3af9b0-fa83-11ee-8748-0affedd7cf69",
+      "AmplifyAppId": "d330nxznd9rxf8"
+    },
+    "categories": {
+      "auth": {
+        "swen614project1c0745a9": {}
+      }
+    }
   }
 }
