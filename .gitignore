@@ -4,7 +4,7 @@
 
 # Ignore .terraform directory
 .terraform/
-
+node_modules/
 # Ignore .terraform.lock.hcl file
 *.lock.hcl
 

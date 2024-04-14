@@ -10,14 +10,12 @@ resource "aws_amplify_app" "my_app" {
         phases:
           preBuild:
             commands:
-                - cd homepage
                 - npm install
-                - npm install aws-amplify @aws-amplify/ui-react
           build:
             commands:
                 - npm run build
         artifacts:
-            baseDirectory: homepage/build   
+            baseDirectory: build   
             files:
             - '**/*'
         cache:
@@ -28,7 +26,7 @@ resource "aws_amplify_app" "my_app" {
 
 resource "aws_amplify_branch" "amplify_branch" {
   app_id      = aws_amplify_app.my_app.id
-  branch_name = "dev"
+  branch_name = "acdev"
 }
 
 # resource "aws_amplify_domain_association" "domain_association" {

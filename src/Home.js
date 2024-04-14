@@ -6,6 +6,8 @@ import logo from './image/logo.png';
 import registrationImg from './image/registration.png';
 import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
+import { API } from 'aws-amplify';
+
 
 // import BASE_URL from './config'; 
 
