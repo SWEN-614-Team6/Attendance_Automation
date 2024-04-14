@@ -1,7 +1,3 @@
-# Provider configuration
-provider "aws" {
-  region = "us-east-1"  # Set your desired AWS region
-}
 
 # Create Cognito User Pool
 resource "aws_cognito_user_pool" "my_user_pool" {

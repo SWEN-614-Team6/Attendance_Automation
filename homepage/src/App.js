@@ -13,6 +13,8 @@ const uuid = require('uuid');
 
 function App() {
 
+  console.log("API-", apiUrl);
+
   const [image, setImage] = useState('');
   const [classImage, setclassImage] = useState('');
 

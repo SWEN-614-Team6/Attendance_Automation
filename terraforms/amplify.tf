@@ -1,3 +1,10 @@
+data "local_file" "api_invoke_url" {
+  filename = "api_invoke_url.txt"
+
+  depends_on = [ null_resource.write_output_to_file ]
+}
+
+
 resource "aws_amplify_app" "my_app" {
   name       = "Attendance_Automation"
   repository = "https://github.com/SWEN-614-Team6/Attendance_Automation"
@@ -10,11 +17,12 @@ resource "aws_amplify_app" "my_app" {
         phases:
           preBuild:
             commands:
+                - cd homepage
                 - npm install
-                - amplify init
           build:
             commands:
-                - REACT_APP_API_ENDPOINT= ${API_invoke_url} npm run build
+                - REACT_APP_API_ENDPOINT=${data.local_file.api_invoke_url.content} 
+                - npm run build
         artifacts:
             baseDirectory: homepage/build   
             files:
