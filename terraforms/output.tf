@@ -11,7 +11,7 @@ output "amplify_app_id" {
 
 resource "null_resource" "write_output_to_file" {
   provisioner "local-exec" {
-    command = "echo '${aws_api_gateway_deployment.deployment.invoke_url}' > api_invoke_url.txt"
+    command = "echo '${aws_api_gateway_deployment.deployment.invoke_url}' | tr -d '\n' > api_invoke_url.txt"
   }
 
   depends_on = [

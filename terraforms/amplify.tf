@@ -21,7 +21,7 @@ resource "aws_amplify_app" "my_app" {
                 - npm install
           build:
             commands:
-                - REACT_APP_API_ENDPOINT=${data.local_file.api_invoke_url.content} 
+                - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
                 - npm run build
         artifacts:
             baseDirectory: homepage/build   
@@ -31,6 +31,7 @@ resource "aws_amplify_app" "my_app" {
           paths: 
             - node_modules/**/*
     EOT 
+  depends_on = [ data.local_file.api_invoke_url ]  
 }
 
 resource "aws_amplify_branch" "amplify_branch" {
