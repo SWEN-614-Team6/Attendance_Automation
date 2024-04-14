@@ -10,12 +10,11 @@ resource "aws_amplify_app" "my_app" {
         phases:
           preBuild:
             commands:
-                - cd homepage
                 - npm install
-                - npm install aws-amplify @aws-amplify/ui-react
+                - amplify init
           build:
             commands:
-                - npm run build
+                - REACT_APP_API_ENDPOINT= ${API_invoke_url} npm run build
         artifacts:
             baseDirectory: homepage/build   
             files:
