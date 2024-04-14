@@ -24,11 +24,9 @@ resource "aws_amplify_app" "my_app" {
         cache:
           paths: 
             - node_modules/**/*
-    EOT
-
-  
- 
+    EOT 
 }
+
 resource "aws_amplify_branch" "amplify_branch" {
   app_id      = aws_amplify_app.my_app.id
   branch_name = "dev"

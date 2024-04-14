@@ -5,9 +5,6 @@ output "API_invoke_url" {
    ]
 }
 
-
-
-
 output "amplify_app_id" {
   value = aws_amplify_app.my_app.id
 }
