@@ -12,11 +12,10 @@ resource "aws_amplify_app" "my_app" {
             commands:
                 - cd homepage
                 - npm install
+                - npm install aws-amplify @aws-amplify/ui-react
           build:
             commands:
                 - npm run build
-                - cd
-                - ls
         artifacts:
             baseDirectory: homepage/build   
             files:
