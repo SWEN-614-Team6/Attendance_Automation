@@ -18,6 +18,7 @@ resource "aws_amplify_app" "my_app" {
           build:
             commands:
                 - npm run build
+                - ls
         artifacts:
             baseDirectory: homepage/build   
             files:
