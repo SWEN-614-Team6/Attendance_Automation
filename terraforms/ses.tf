@@ -1,7 +1,3 @@
-# provider "aws" {
-#   region = "us-east-1"
-# }
-
 # # Verify an email address in AWS SES
 # resource "aws_ses_email_identity" "email_identity" {
 #   email = "naikpraneet44@gmail.com"
