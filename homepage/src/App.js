@@ -60,6 +60,9 @@ function App() {
     settext_message('');
     setSelectedDate('');
     setstudentlist([]);
+
+    set_absent_student_message('');
+    set_absent_studentlist([]);
   }
 
   const toggleRegisterModal = () => {
@@ -116,6 +119,7 @@ function App() {
      console.log(response.mylist);
      setstudentlist(response.mylist);
      settext_message(response.message);
+     set_absent_student_message(response.absent_message);
      set_absent_studentlist(response.absent_students);
       // settext_message(`${response['message']} :`);
     }
@@ -199,7 +203,7 @@ function App() {
                 <p>{mylist.firstName} {mylist.lastName}</p>
             ))}
 
-            <h4>Following Students are absent</h4>
+            <h4>{absent_student_message}</h4>
             {absent_studentlist.map((mylist, index) => (
                 <p>{mylist.firstName} {mylist.lastName}</p>
             ))}
