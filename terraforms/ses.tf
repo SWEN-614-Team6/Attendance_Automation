@@ -54,7 +54,7 @@ resource "aws_lambda_function" "send_email_lambda" {
   role             = aws_iam_role.lambda_role_for_ses.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.8"
-  source_code_hash = filebase64sha256("path/to/your/lambda_function.zip")
+  source_code_hash = filebase64sha256("Lambda_Functions/Function-1/student_registration_tf.zip")
 }
 
 # Permission for SES to trigger Lambda function
