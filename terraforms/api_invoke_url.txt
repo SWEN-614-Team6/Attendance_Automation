@@ -1,1 +1,1 @@
-https://lbk96fwh3d.execute-api.us-east-1.amazonaws.com/dev
+https://jtnefri9od.execute-api.us-east-1.amazonaws.com/dev

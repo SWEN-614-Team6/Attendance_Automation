@@ -24,7 +24,7 @@ resource "aws_amplify_app" "my_app" {
                 - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
                 - npm run build
         artifacts:
-            baseDirectory: build   
+            baseDirectory: homepage/build   
             files:
             - '**/*'
         cache:
