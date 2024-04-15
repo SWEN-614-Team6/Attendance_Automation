@@ -1,9 +1,9 @@
-# # Verify an email address in AWS SES
+## Verify an email address in AWS SES
 resource "aws_ses_email_identity" "email_identity" {
 email = "naikpraneet44@gmail.com"
 }
 
-# # IAM role for Lambda function
+## IAM role for Lambda function
  resource "aws_iam_role" "lambda_role_for_ses" {
    name = "lambda_role_for_ses"
 
@@ -21,7 +21,7 @@ Statement = [
    })
  }
 
-# # IAM policy to allow Lambda function to send SES emails
+## IAM policy to allow Lambda function to send SES emails
 resource "aws_iam_policy" "lambda_policy_for_ses" {
    name        = "lambda_policy_for_ses"
    description = "IAM policy for Lambda to send emails via SES"
@@ -41,13 +41,13 @@ resource "aws_iam_policy" "lambda_policy_for_ses" {
    })
  }
 
-# # Attach the policy to the role
+## Attach the policy to the role
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_for_ses" {
    role       = aws_iam_role.lambda_role_for_ses.name
    policy_arn = aws_iam_policy.lambda_policy_for_ses.arn
  }
 
-# # Lambda function to send emails
+## Lambda function to send emails
  resource "aws_lambda_function" "send_email_lambda" {
    filename         = "Lambda_Functions/Function-1/student_registration_tf.zip"
    function_name    = "send_email"
@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_for_ses" {
    source_code_hash = filebase64sha256("path/to/your/lambda_function.zip")
  }
 
-# # Permission for SES to trigger Lambda function
+## Permission for SES to trigger Lambda function
  resource "aws_lambda_permission" "allow_ses_invoke" {
    statement_id  = "AllowExecutionFromSES"
    action        = "lambda:InvokeFunction"
