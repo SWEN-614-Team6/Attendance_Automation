@@ -87,8 +87,8 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
 # Please add the email di to test
-sender = "youremail"
-receiver = "youremail"
+sender = "atharvamchiplunkar12@gmail.com"
+
 
 subject = "Student Registered successfully."
 
@@ -117,7 +117,7 @@ def lambda_handler(event, context):
             lastName = name[1]
             emailId = name[2]
             register_employee(faceId, firstName,lastName, emailId)
-            send_email(sender,receiver,body_html, body_text,subject)
+            send_email(sender,emailId,body_html, body_text,subject)
         return response
     except Exception as e:
         print(e)
