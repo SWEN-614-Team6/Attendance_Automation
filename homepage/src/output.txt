@@ -2,7 +2,7 @@
   "API_invoke_url": {
     "sensitive": false,
     "type": "string",
-    "value": "https://1tg9svsmlh.execute-api.us-east-1.amazonaws.com/dev"
+    "value": "https://qc0zk3o3me.execute-api.us-east-1.amazonaws.com/dev"
   },
   "new_path_output": {
     "sensitive": false,
