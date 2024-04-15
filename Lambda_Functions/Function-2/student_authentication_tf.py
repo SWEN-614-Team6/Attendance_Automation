@@ -142,6 +142,7 @@ def lambda_handler(event,context):
                 'status': 'Success',
                 'message' : 'Following students attendance updated',
                 'mylist' : results,
+                'absent_message' : 'Following students are absent',
                 'absent_students' : unmatched_students
             })
             
