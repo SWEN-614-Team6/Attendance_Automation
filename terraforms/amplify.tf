@@ -22,6 +22,8 @@ resource "aws_amplify_app" "my_app" {
           build:
             commands:
                 - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
+                - echo "REACT_APP_USER_POOL_ID= ${aws_cognito_user_pool.my_user_pool.id}" >> .env.production
+                - echo "REACT_APP_USER_POOL_CLIENT_ID=${aws_cognito_user_pool_client.my_user_pool_client.id}" >> .env.production
                 - npm run build
         artifacts:
             baseDirectory: homepage/build   
@@ -31,7 +33,7 @@ resource "aws_amplify_app" "my_app" {
           paths: 
             - node_modules/**/*
     EOT 
-  depends_on = [ data.local_file.api_invoke_url ]  
+  depends_on = [ data.local_file.api_invoke_url, aws_cognito_user_pool.my_user_pool, aws_cognito_user_pool_client.my_user_pool_client ]  
 }
 
 resource "aws_amplify_branch" "amplify_branch" {
