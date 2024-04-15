@@ -25,6 +25,10 @@ function App() {
   const [new_student_msg, setnew_student_msg] = useState('');
 
   const [studentlist, setstudentlist] = useState([]);
+  
+  const [absent_studentlist, set_absent_studentlist] = useState([]);
+
+  const [absent_student_message, set_absent_student_message] = useState('');
 
   const [selectedDate, setSelectedDate] = useState('');
   const [BASE_URL, setBASE_URL] = useState(null);
@@ -112,6 +116,7 @@ function App() {
      console.log(response.mylist);
      setstudentlist(response.mylist);
      settext_message(response.message);
+     set_absent_studentlist(response.absent_students);
       // settext_message(`${response['message']} :`);
     }
     else 
@@ -191,6 +196,11 @@ function App() {
             
             <h3>{text_message}</h3>
             {studentlist.map((mylist, index) => (
+                <p>{mylist.firstName} {mylist.lastName}</p>
+            ))}
+
+            <h4>Following Students are absent</h4>
+            {absent_studentlist.map((mylist, index) => (
                 <p>{mylist.firstName} {mylist.lastName}</p>
             ))}
 
