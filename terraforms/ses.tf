@@ -53,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_for_ses" {
 
 # Lambda function to send emails
 resource "aws_lambda_function" "send_email_lambda" {
-  filename         = "path/to/your/lambda_function.zip"
+  filename         = "Lambda_Functions/Function-1/student_registration_tf.zip"
   function_name    = "send_email"
   role             = aws_iam_role.lambda_role_for_ses.arn
   handler          = "lambda_function.lambda_handler"
