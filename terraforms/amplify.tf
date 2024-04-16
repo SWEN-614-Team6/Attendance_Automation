@@ -4,6 +4,17 @@ data "local_file" "api_invoke_url" {
   depends_on = [ null_resource.write_output_to_file ]
 }
 
+data "local_file" "user_pool_client_id" {
+  filename = "user_pool_client_id.txt"
+
+  depends_on = [ null_resource.write_output_to_file ]
+}
+
+data "local_file" "user_pool_id" {
+  filename = "user_pool_id.txt"
+
+  depends_on = [ null_resource.write_output_to_file ]
+}
 
 resource "aws_amplify_app" "my_app" {
   name       = "Attendance_Automation"
@@ -21,9 +32,9 @@ resource "aws_amplify_app" "my_app" {
                 - npm install
           build:
             commands:
-                -echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
-                -echo "REACT_APP_USER_POOL_ID= ${data.local_file.user_pool_client_id.content}" >> .env.production
-                -echo "REACT_APP_USER_POOL_CLIENT_ID=${data.local_file.user_pool_id.content}" >> .env.production
+                - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
+                - echo "REACT_APP_USER_POOL_ID= ${data.local_file.user_pool_client_id.content}" >> .env.production
+                - echo "REACT_APP_USER_POOL_CLIENT_ID=${data.local_file.user_pool_id.content}" >> .env.production
                 - npm run build
         artifacts:
             baseDirectory: homepage/build   
