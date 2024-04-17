@@ -29,7 +29,6 @@ def lambda_handler(event, context):
     print(event)
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
-    key = key.replace("attherate", "@")
 
     try:
         response = index_employee_image(bucket, key)
@@ -41,9 +40,10 @@ def lambda_handler(event, context):
             firstName = name[0]
             lastName = name[1]
             emailId = name[2]
+            email = emailId + + "@g.rit.edu"
             register_employee(faceId, firstName,lastName, emailId)
             # register_employee(faceId, firstName,lastName)
-            send_email(emailId,body_html, body_text,subject)
+            send_email(email,body_html, body_text,subject)
         return response
     except Exception as e:
         print(e)
