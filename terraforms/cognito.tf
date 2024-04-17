@@ -45,7 +45,13 @@ resource "aws_cognito_user_pool_client" "my_user_pool_client" {
   user_pool_id           = aws_cognito_user_pool.my_user_pool.id
   //explicit_auth_flows = [ "ALLOW_SRP_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD" ]
   generate_secret        = false
-  prevent_user_existence_errors = "LEGACY"
+  # prevent_user_existence_errors = "LEGACY"
+  prevent_user_existence_errors = "ENABLED"
+  explicit_auth_flows = [
+    "ALLOW_REFRESH_TOKEN_AUTH",
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_ADMIN_USER_PASSWORD_AUTH"
+  ]
   refresh_token_validity = 1
   access_token_validity  = 1
   id_token_validity      = 1
@@ -60,12 +66,18 @@ resource "aws_cognito_identity_pool" "my_identity_pool" {
   identity_pool_name = "my-identity-pool"
   allow_unauthenticated_identities = false
 
+  # Define the Cognito Identity Provider
   cognito_identity_providers {
-    client_id               = aws_cognito_user_pool_client.my_user_pool_client.id
-    provider_name           = aws_cognito_user_pool.my_user_pool.endpoint
-    server_side_token_check = false
+    client_id             = aws_cognito_user_pool_client.my_user_pool_client.id
+    provider_name         = aws_cognito_user_pool.my_user_pool.endpoint
+    server_side_token_check = true
   }
 }
+
+# resource "aws_cognito_user_pool_domain" "cognito-domain" {
+#   domain       = "gabrielaraujo"
+#   user_pool_id = "${aws_cognito_user_pool.my_user_pool.id}"
+# }
 
 # Output Cognito User Pool and User Pool Client IDs
 # output "user_pool_id" {
