@@ -22,6 +22,7 @@ resource "aws_cognito_user_pool" "my_user_pool" {
     email_sending_account = "COGNITO_DEFAULT"
   
   }
+  mfa_configuration = "OFF"
 
   auto_verified_attributes = ["email"]
   username_configuration {
