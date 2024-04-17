@@ -32,7 +32,7 @@ yarn-error.log*
 # amplify/backend/.temp
 # build/
 # dist/
-# node_modules/
+node_modules/
 # aws-exports.js
 # awsconfiguration.json
 # amplifyconfiguration.json
