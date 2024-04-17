@@ -81,7 +81,7 @@ function App() {
   const fileExtension = image.name.split('.').pop();
   event.target.first_name.value = '';
   event.target.last_name.value = '';
-  event.target.email_Id.value = '';
+  event.target.email_id.value = '';
 
   const visitorImageName = `${firstName}_${lastName}_${email_Id}.${fileExtension}`;
 
