@@ -41,7 +41,6 @@ def lambda_handler(event, context):
             firstName = name[0]
             lastName = name[1]
             emailId = name[2]
-            print()
             register_employee(faceId, firstName,lastName, emailId)
             # register_employee(faceId, firstName,lastName)
             send_email(emailId,body_html, body_text,subject)
