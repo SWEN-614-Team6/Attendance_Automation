@@ -40,7 +40,7 @@ def lambda_handler(event, context):
             firstName = name[0]
             lastName = name[1]
             emailId = name[2]
-            email = emailId + + "@g.rit.edu"
+            email = emailId + "@g.rit.edu"
             register_employee(faceId, firstName,lastName, emailId)
             # register_employee(faceId, firstName,lastName)
             send_email(email,body_html, body_text,subject)
