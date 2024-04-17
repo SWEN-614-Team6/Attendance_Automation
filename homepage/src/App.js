@@ -8,9 +8,22 @@ import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
 
 // import BASE_URL from './config'; 
+
+
+// import Amplify from 'aws-amplify';
+import { Amplify, Auth } from 'aws-amplify'; // for core Amplify and Authentication functionalities
+
+import awsconfig from './aws-exports';
+// import {AmplifySignOut, withAuthenticator } from '@aws-amplify/ui-react'
+
+// import { AmplifySignOut, withAuthenticator } from '@aws-amplify/ui-react';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+
+
+Amplify.configure(awsconfig) 
+
 const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 const uuid = require('uuid');
-
 function App() {
 
   console.log("API-", apiUrl);
@@ -162,6 +175,7 @@ function App() {
     <div className='header'>
       <img src = {logo} alt='Logo'/>
       <h1>Attendance Automation</h1>
+      {/* <AmplifySignOut /> */}
     </div>
       
     <h2>Welcome, Admin!!</h2>
@@ -255,4 +269,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);
