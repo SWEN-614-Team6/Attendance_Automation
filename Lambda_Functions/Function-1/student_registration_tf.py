@@ -1,5 +1,5 @@
 import boto3
-from ...homepage.PythonFunctions.SendEmail import send_email
+# from ...homepage.PythonFunctions.SendEmail import send_email
 # from SendEmail import send_email
 
 s3 = boto3.client('s3')
@@ -10,7 +10,7 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
 # Please add the email di to test
-receiver = "pn3270@rit.edu"
+# receiver = "pn3270@rit.edu"
 
 subject = "Student Registered successfully."
 
@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             emailId = name[2]
             register_employee(faceId, firstName,lastName, emailId)
             # register_employee(faceId, firstName,lastName)
-            send_email(receiver,body_html, body_text,subject)
+            send_email(emailId,body_html, body_text,subject)
         return response
     except Exception as e:
         print(e)
@@ -74,6 +74,39 @@ def register_employee(faceId, firstName,lastName,email_id):
             'email' : email_id
         }
     )
+
+def send_email(Receiver, body_html, body_text, subject):
+    client = boto3.client('ses', region='us-east-1')
+
+    try:
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    Receiver,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Data': body_html,
+                        'Charset': 'UTF-8'
+                    },
+                    'Text': {
+                        'Data': body_text,
+                        'Charset': 'UTF-8'
+                    },
+                },
+                'Subject': {
+                    'Data': subject,
+                    'Charset': 'UTF-8'
+                },
+            }
+        )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:", end=" ")
+        print(response['MessageId'])
 
 
 # import boto3
