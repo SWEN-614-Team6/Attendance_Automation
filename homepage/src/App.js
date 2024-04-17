@@ -7,6 +7,14 @@ import registrationImg from './image/registration.png';
 import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
 
+import {Amplify} from 'aws-amplify';
+import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
+
+import '@aws-amplify/ui-react/styles.css';
+import awsExports from './aws-exports';
+
+Amplify.configure(awsExports);
+
 // import BASE_URL from './config'; 
 const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 const uuid = require('uuid');
@@ -159,6 +167,7 @@ function App() {
 
   return (
    <div>
+   <Authenticator>
     <div className='header'>
       <img src = {logo} alt='Logo'/>
       <h1>Attendance Automation</h1>
@@ -250,9 +259,10 @@ function App() {
           <Button color="secondary" onClick={toggleRegisterModal}>Cancel</Button>
         </ModalFooter>
       </Modal>
-       
+      </Authenticator>
    </div>
   );
 }
 
-export default App;
+// export default App;
+export default withAuthenticator(App);
