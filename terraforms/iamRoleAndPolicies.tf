@@ -105,6 +105,10 @@ resource "aws_iam_role_policy_attachment" "rekognition_attach" {
   role       = aws_iam_role.role_for_lamda_functions_tf.name
   policy_arn = aws_iam_policy.swen614_rekognition_policy.arn
 }
+resource "aws_iam_role_policy_attachment" "lambda_ses_policy" {
+  role       = aws_iam_role.role_for_lamda_functions_tf.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSESFullAccess"
+}
 
 
 # #Attaching AWS lambda full access to the IAM role

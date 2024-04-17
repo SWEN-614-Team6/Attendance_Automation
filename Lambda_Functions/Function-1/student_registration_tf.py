@@ -1,4 +1,5 @@
 import boto3
+from ...homepage.PythonFunctions.SendEmail import send_email
 # from SendEmail import send_email
 
 s3 = boto3.client('s3')
@@ -9,20 +10,19 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
 # Please add the email di to test
-# sender = "youremail"
-# receiver = "youremail"
+receiver = "pn3270@rit.edu"
 
-# subject = "Student Registered successfully."
+subject = "Student Registered successfully."
 
-# body_text = "This is automated email body please do not use it for your reference."
-# body_html = """<html>
-#     <head></head>
-#     <body>
-#     <h1>Hey Hi...</h1>
-#     <p>Dear Student of class SWEN 514/614. Your image is successfully registered into the attendance system. Have Fun!</a>.</p>
-#     </body>
-#     </html>
-#                 """
+body_text = "This is automated email body please do not use it for your reference."
+body_html = """<html>
+    <head></head>
+    <body>
+    <h1>Hey Hi...</h1>
+    <p>Dear Student of class SWEN 514/614. Your image is successfully registered into the attendance system. Have Fun!</a>.</p>
+    </body>
+    </html>
+                """
 
 def lambda_handler(event, context):
     print('Hi event')
@@ -39,10 +39,10 @@ def lambda_handler(event, context):
             name = key.split('.')[0].split('_')
             firstName = name[0]
             lastName = name[1]
-            # emailId = name[2]
-            # register_employee(faceId, firstName,lastName, emailId)
-            register_employee(faceId, firstName,lastName)
-            # send_email(sender,receiver,body_html, body_text,subject)
+            emailId = name[2]
+            register_employee(faceId, firstName,lastName, emailId)
+            # register_employee(faceId, firstName,lastName)
+            send_email(receiver,body_html, body_text,subject)
         return response
     except Exception as e:
         print(e)
@@ -65,13 +65,13 @@ def index_employee_image(bucket, key):
     return response
 
 # def register_employee(faceId, firstName,lastName,email_id):
-def register_employee(faceId, firstName,lastName):
+def register_employee(faceId, firstName,lastName,email_id):
     employeeTable.put_item(
         Item = {
             'rekognitionId' : faceId,
             'firstName' : firstName,
-            'lastName' : lastName
-            # 'email' : email_id
+            'lastName' : lastName,
+            'email' : email_id
         }
     )
 
