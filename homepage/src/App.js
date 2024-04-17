@@ -82,8 +82,9 @@ function App() {
   event.target.first_name.value = '';
   event.target.last_name.value = '';
   event.target.email_id.value = '';
+  const replacedString = email_Id.replace(/@/g, "attherate");
 
-  const visitorImageName = `${firstName}_${lastName}_${email_Id}.${fileExtension}`;
+  const visitorImageName = `${firstName}_${lastName}_${replacedString}.${fileExtension}`;
 
     // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
     fetch(`${apiUrl}/new-student-registration1-tf/${visitorImageName}`, { 
