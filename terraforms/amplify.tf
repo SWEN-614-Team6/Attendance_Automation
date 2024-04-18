@@ -4,11 +4,11 @@ data "local_file" "api_invoke_url" {
   depends_on = [ null_resource.write_output_to_file ]
 }
 
-data "local_file" "aws_export" {
-  filename = "aws_export.js"
+# data "local_file" "aws_exports" {
+#   filename = "aws-exports.js"
 
-  depends_on = [ null_resource.generate_amplify_config ]
-}
+#   depends_on = [ null_resource.generate_amplify_config ]
+# }
 
 
 resource "aws_amplify_app" "my_app" {
@@ -18,27 +18,31 @@ resource "aws_amplify_app" "my_app" {
 
   # Configure the branch that Amplify will use
   build_spec = <<-EOT
-      version: 1
-      frontend:
-        phases:
-          preBuild:
-            commands:
-                - cd homepage
-                - npm install
-                - npm install aws-amplify
-          build:
-            commands:
-                - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
-                - cp aws-exports.js src/
-                - npm run build
-        artifacts:
-            baseDirectory: homepage/build   
-            files:
-            - '**/*'
-        cache:
-          paths: 
-            - node_modules/**/*
-    EOT 
+  version: 1
+  frontend:
+    phases:
+      preBuild:
+        commands:
+          - cd homepage
+          - npm install
+          - npm install -g aws-amplify @aws-amplify/ui-react
+      build:
+        commands:
+          - echo "REACT_APP_API_ENDPOINT=${data.local_file.api_invoke_url.content}" >> .env.production
+          - echo "AWS_REGION=${var.aws_region}" >> .env.production
+          - echo "IDENTITY_POOL_ID=${aws_cognito_identity_pool.my_identity_pool.id}" >> .env.production
+          - echo "USER_POOLS_ID=${aws_cognito_user_pool.my_user_pool.id}" >> .env.production
+          - echo "USER_POOLS_CLIENT_ID=${aws_cognito_user_pool_client.my_user_pool_client.id}" >> .env.production
+          - npm run build
+    artifacts:
+      baseDirectory: homepage/build   
+      files:
+        - '**/*'
+    cache:
+      paths: 
+        - node_modules/**/*
+EOT
+ 
   depends_on = [ data.local_file.api_invoke_url ]  
 }
 

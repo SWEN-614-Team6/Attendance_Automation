@@ -1,12 +1,21 @@
 import React from 'react';
 import './App.css';
-import {Amplify} from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import awsExports from './aws-exports';
 import Home from './Home';
 
-Amplify.configure(awsExports);
+// Define AWS Amplify configuration directly
+const awsConfig = {
+  aws_project_region: process.env.AWS_REGION,
+  aws_cognito_identity_pool_id: process.env.IDENTITY_POOL_ID,
+  aws_cognito_region: process.env.AWS_REGION,
+  aws_user_pools_id: process.env.USER_POOLS_ID,
+  aws_user_pools_web_client_id: process.env.USER_POOLS_CLIENT_ID
+};
+
+// Configure Amplify with awsConfig
+Amplify.configure(awsConfig);
 
 function App() {
   return (
