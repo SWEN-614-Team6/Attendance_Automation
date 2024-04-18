@@ -29,10 +29,10 @@ resource "aws_amplify_app" "my_app" {
       build:
         commands:
           - echo "REACT_APP_API_ENDPOINT=${data.local_file.api_invoke_url.content}" >> .env.production
-          - echo "AWS_REGION=${var.aws_region}" >> .env.production
-          - echo "IDENTITY_POOL_ID=${aws_cognito_identity_pool.my_identity_pool.id}" >> .env.production
-          - echo "USER_POOLS_ID=${aws_cognito_user_pool.my_user_pool.id}" >> .env.production
-          - echo "USER_POOLS_CLIENT_ID=${aws_cognito_user_pool_client.my_user_pool_client.id}" >> .env.production
+          - echo "REACT_APP_AWS_REGION=${var.aws_region}" >> .env.production
+          - echo "REACT_APP_IDENTITY_POOL_ID=${aws_cognito_identity_pool.my_identity_pool.id}" >> .env.production
+          - echo "REACT_APP_USER_POOLS_ID=${aws_cognito_user_pool.my_user_pool.id}" >> .env.production
+          - echo "REACT_APP_USER_POOLS_CLIENT_ID=${aws_cognito_user_pool_client.my_user_pool_client.id}" >> .env.production
           - npm run build
     artifacts:
       baseDirectory: homepage/build   
