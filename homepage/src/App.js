@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Auth, Storage, Amplify } from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Home from './Home';
+import CryptoJS from '../crypto-js';
 
 // Define AWS Amplify configuration directly
 const awsConfig = {
@@ -14,11 +15,32 @@ const awsConfig = {
   aws_user_pools_web_client_id: process.env.REACT_APP_USER_POOLS_CLIENT_ID
 };
 
-
 // Configure Amplify with awsConfig
 Amplify.configure(awsConfig);
 
 function App() {
+  useEffect(() => {
+    // Function to calculate SECRET_HASH
+    const calculateSecretHash = (clientId, clientSecret, username) => {
+      const secret = `${clientId}${username}`;
+      return CryptoJS.HmacSHA256(secret, clientSecret).toString(CryptoJS.enc.Base64);
+    };
+
+    // Get user's username
+    const username = 'user@example.com';
+
+    // Calculate SECRET_HASH
+    const clientId = process.env.REACT_APP_USER_POOLS_CLIENT_ID;
+    const clientSecret = process.env.REACT_APP_USER_POOLS_CLIENT_SECRET;
+    const secretHash = calculateSecretHash(clientId, clientSecret, username);
+
+    // Override Auth.signIn to include SECRET_HASH
+    const signIn = Auth.signIn.bind(Auth);
+    Auth.signIn = (username, password) => {
+      return signIn(username, password, secretHash);
+    };
+  }, []);
+
   return (
     <div className="App">
       <Authenticator>

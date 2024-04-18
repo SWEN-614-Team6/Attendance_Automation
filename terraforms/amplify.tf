@@ -26,6 +26,7 @@ resource "aws_amplify_app" "my_app" {
           - cd homepage
           - npm install
           - npm install -g aws-amplify @aws-amplify/ui-react
+          - npm install crypto-js
       build:
         commands:
           - echo "REACT_APP_API_ENDPOINT=${data.local_file.api_invoke_url.content}" >> .env.production
@@ -33,6 +34,7 @@ resource "aws_amplify_app" "my_app" {
           - echo "REACT_APP_IDENTITY_POOL_ID=${aws_cognito_identity_pool.my_identity_pool.id}" >> .env.production
           - echo "REACT_APP_USER_POOLS_ID=${aws_cognito_user_pool.my_user_pool.id}" >> .env.production
           - echo "REACT_APP_USER_POOLS_CLIENT_ID=${aws_cognito_user_pool_client.my_user_pool_client.id}" >> .env.production
+          - echo "REACT_APP_USER_POOLS_CLIENT_SECRET = ${aws_cognito_user_pool_client.my_user_pool_client.client_secret}"  >> .env.production
           - npm run build
     artifacts:
       baseDirectory: homepage/build   
