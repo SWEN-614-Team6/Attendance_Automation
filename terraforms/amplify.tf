@@ -49,12 +49,13 @@ resource "aws_amplify_app" "my_app" {
             commands:
                 - cd homepage
                 - npm install
+                - npm install dotenv  # Install the dotenv package
           build:
             commands:
                 - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
                 - echo "REACT_aws_cognito_identity_pool_id= 'us-east-1:34872535-0ab2-49f6-8938-7e29732adc08'" >> .env.production
-                - echo "REACT_aws_user_pools_id='us-east-1_rhTV292X4'  " >> .env.production
-                - echo "REACT_aws_user_pools_web_client_id='5rm5najpcjj97i9pcn9ns5vgf6' " >> .env.production
+                - echo "REACT_aws_user_pools_id='us-east-1_rhTV292X4'" >> .env.production
+                - echo "REACT_aws_user_pools_web_client_id='5rm5najpcjj97i9pcn9ns5vgf6'" >> .env.production
                 - npm run build
         artifacts:
             baseDirectory: homepage/build   
