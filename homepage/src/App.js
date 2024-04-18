@@ -68,7 +68,6 @@ function App() {
 
   return (
     <div className="App">
-      <Authenticator>
         {({ signOut }) => (
           <main>
             <header className='App-header'>
@@ -105,7 +104,6 @@ function App() {
             </header>
           </main>
         )}
-      </Authenticator>
     </div>
   );
 }
