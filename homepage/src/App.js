@@ -4,7 +4,7 @@ import { Auth, Storage, Amplify } from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Home from './Home';
-import CryptoJS from '../crypto-js';
+import CryptoJS from 'crypto-js';
 
 // Define AWS Amplify configuration directly
 const awsConfig = {
