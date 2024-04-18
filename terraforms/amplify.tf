@@ -4,6 +4,12 @@ data "local_file" "api_invoke_url" {
   depends_on = [ null_resource.write_output_to_file ]
 }
 
+data "local_file" "aws_export" {
+  filename = "aws_export.js"
+
+  depends_on = [ null_resource.generate_amplify_config ]
+}
+
 
 resource "aws_amplify_app" "my_app" {
   name       = "Attendance_Automation"
@@ -19,9 +25,11 @@ resource "aws_amplify_app" "my_app" {
             commands:
                 - cd homepage
                 - npm install
+                - npm install aws-amplify
           build:
             commands:
                 - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
+                - cp aws-exports.js src/
                 - npm run build
         artifacts:
             baseDirectory: homepage/build   

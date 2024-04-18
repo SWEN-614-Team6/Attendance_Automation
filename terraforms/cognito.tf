@@ -33,3 +33,25 @@ output "user_pool_id" {
 output "user_pool_client_id" {
   value = aws_cognito_user_pool_client.my_user_pool_client.id
 }
+
+resource "null_resource" "generate_amplify_config" {
+  # Trigger this resource whenever the Cognito user pool is updated
+  triggers = {
+    user_pool_id = aws_cognito_user_pool.my_user_pool.id
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      cat <<EOF > aws-exports.js
+      const awsConfig = {
+        aws_project_region: "${var.aws_region}",
+        aws_cognito_identity_pool_id: "${aws_cognito_user_pool.my_user_pool.id}",
+        aws_cognito_region: "${var.aws_region}",
+        aws_user_pools_id: "${aws_cognito_user_pool.my_user_pool.id}",
+        aws_user_pools_web_client_id: "${aws_cognito_user_pool_client.my_user_pool_client.id}"
+      };
+      export default awsConfig;
+      EOF
+    EOT
+  }
+}
