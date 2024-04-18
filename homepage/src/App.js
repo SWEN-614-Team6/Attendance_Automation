@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import { Auth } from 'aws-amplify';
-import Amplify from 'aws-amplify';
+import {Amplify} from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Home from './Home';
