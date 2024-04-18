@@ -30,7 +30,13 @@ function Home() {
     setUpdateModal(!updateModal);
     settext_message('');
     setstudentlist([]);
+
     setSelectedDate('');
+
+
+    set_absent_student_message('');
+    set_absent_studentlist([]);
+
   }
 
   const toggleRegisterModal = () => {
