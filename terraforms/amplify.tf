@@ -25,6 +25,7 @@ resource "aws_amplify_app" "my_app" {
         commands:
           - cd homepage
           - npm install
+          - npm install aws-amplify
           - npm install -g aws-amplify @aws-amplify/ui-react
           - npm install crypto-js
       build:
