@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "dotenv -e .env.production react-scripts build && node generate-aws-exports.js",
+    "build": "npx dotenv -e .env.production react-scripts build && node generate-aws-exports.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
