@@ -1,1 +1,1 @@
-https://jtnefri9od.execute-api.us-east-1.amazonaws.com/dev
+https://sa283976q7.execute-api.us-east-1.amazonaws.com/dev
