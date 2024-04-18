@@ -8,10 +8,12 @@ import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
 
 // import BASE_URL from './config'; 
-
+const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 const uuid = require('uuid');
 
 function App() {
+
+  console.log("API-", apiUrl);
 
   const [image, setImage] = useState('');
   const [classImage, setclassImage] = useState('');
@@ -23,6 +25,10 @@ function App() {
   const [new_student_msg, setnew_student_msg] = useState('');
 
   const [studentlist, setstudentlist] = useState([]);
+  
+  const [absent_studentlist, set_absent_studentlist] = useState([]);
+
+  const [absent_student_message, set_absent_student_message] = useState('');
 
   const [selectedDate, setSelectedDate] = useState('');
   const [BASE_URL, setBASE_URL] = useState(null);
@@ -54,6 +60,10 @@ function App() {
     settext_message('');
     setSelectedDate('');
     setstudentlist([]);
+
+    set_absent_student_message('');
+    set_absent_studentlist([]);
+
   }
 
   const toggleRegisterModal = () => {
@@ -75,7 +85,7 @@ function App() {
  const visitorImageName = `${firstName}_${lastName}.${fileExtension}`;
 
     // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
-    fetch(`${BASE_URL}/new-student-registration-tf/${visitorImageName}`, { 
+    fetch(`${apiUrl}/new-student-registration-tf/${visitorImageName}`, { 
     method : 'PUT',
     headers :  {
      // 'Content-Type' : 'image/jpeg'
@@ -95,7 +105,7 @@ function App() {
     
    const newfileExtension = classImage.name.split('.').pop();
   //  fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/class/class-photos-bucket/${visitorImageName}`, {
-    fetch(`${BASE_URL}/class/class-images-tf/${visitorImageName}`, { // Construct the API endpoint using the base URL
+    fetch(`${apiUrl}/class/class-images-tf/${visitorImageName}`, { // Construct the API endpoint using the base URL
    method : 'PUT',
     headers :  {
       'Content-Type': `image/${newfileExtension}`,
@@ -110,6 +120,8 @@ function App() {
      console.log(response.mylist);
      setstudentlist(response.mylist);
      settext_message(response.message);
+     set_absent_student_message(response.absent_message);
+     set_absent_studentlist(response.absent_students);
       // settext_message(`${response['message']} :`);
     }
     else 
@@ -128,7 +140,7 @@ function App() {
   //    objectKey : `${visitorImageName}`,
   //    date_of_attendance : `${selectedDate}`
   //  })
-  const requestUrl = `${BASE_URL}/studentidentify?${new URLSearchParams({ // Construct the API endpoint using the base URL
+  const requestUrl = `${apiUrl}/studentidentify?${new URLSearchParams({ // Construct the API endpoint using the base URL
     objectKey: `${visitorImageName}`,
     date_of_attendance: `${selectedDate}`
   })}`;
@@ -189,6 +201,11 @@ function App() {
             
             <h3>{text_message}</h3>
             {studentlist.map((mylist, index) => (
+                <p>{mylist.firstName} {mylist.lastName}</p>
+            ))}
+
+            <h4>{absent_student_message}</h4>
+            {absent_studentlist.map((mylist, index) => (
                 <p>{mylist.firstName} {mylist.lastName}</p>
             ))}
 
