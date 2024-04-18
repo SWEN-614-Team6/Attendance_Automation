@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import {Amplify} from 'aws-amplify';
-import { Auth } from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Home from './Home';
+import {Amplify} from 'aws-amplify';
+import CryptoJS from 'crypto-js';
 
 // Define AWS Amplify configuration directly
 
@@ -38,8 +38,10 @@ const awsmobile = {
 // Configure Amplify with awsConfig
 Amplify.configure(awsmobile);
 
-
 function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   useEffect(() => {
     // Function to calculate SECRET_HASH
     const calculateSecretHash = (clientId, clientSecret, username) => {
@@ -47,20 +49,22 @@ function App() {
       return CryptoJS.HmacSHA256(secret, clientSecret).toString(CryptoJS.enc.Base64);
     };
 
-    // Get user's username
-    const username = 'user@example.com';
-
     // Calculate SECRET_HASH
     const clientId = process.env.REACT_APP_USER_POOLS_CLIENT_ID;
     const clientSecret = process.env.REACT_APP_USER_POOLS_CLIENT_SECRET;
     const secretHash = calculateSecretHash(clientId, clientSecret, username);
 
-    // Override Auth.signIn to include SECRET_HASH
-    const signIn = Auth.signIn.bind(Auth);
-    Auth.signIn = (username, password) => {
+    // Override Amplify.Auth.signIn to include SECRET_HASH
+    const signIn = Amplify.Auth.signIn.bind(Amplify.Auth);
+    Amplify.Auth.signIn = () => {
       return signIn(username, password, secretHash);
     };
-  }, []);
+  }, [username, password]);
+
+  const handleSignIn = () => {
+    // Trigger the signIn action
+    Amplify.Auth.signIn();
+  };
 
   return (
     <div className="App">
@@ -70,6 +74,22 @@ function App() {
             <header className='App-header'>
               {/* Quiz Component */}
               { <Home /> }
+              {/* Sign In Form */}
+              <div>
+                <input 
+                  type="text" 
+                  placeholder="Username" 
+                  value={username} 
+                  onChange={(e) => setUsername(e.target.value)} 
+                />
+                <input 
+                  type="password" 
+                  placeholder="Password" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                />
+                <button onClick={handleSignIn}>Sign In</button>
+              </div>
               {/* Sign Out Button */}
               <button 
                 onClick={signOut} 
