@@ -1,7 +1,15 @@
 const fs = require('fs');
+const path = require('path');
 
 // Load environment variables from .env.production
-require('dotenv').config({ path: '.env.production' });
+const envPath = path.resolve(__dirname, '..', '.env.production');
+const envConfig = require('dotenv').parse(fs.readFileSync(envPath));
+
+// Merge process.env and envConfig
+for (const key in envConfig) {
+  process.env[key] = envConfig[key];
+}
+
 
 const awsExports = {
     "aws_project_region": "us-east-1",
