@@ -11,13 +11,12 @@ import {Amplify} from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css';
-import dotenv from 'dotenv';
 import awsExports from './aws-exports';
 
-dotenv.config({ path: './.env.production' }); 
 Amplify.configure(awsExports);
 
 // import BASE_URL from './config'; 
+//  // "build": "react-scripts build",
 const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 const uuid = require('uuid');
 

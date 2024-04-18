@@ -50,6 +50,7 @@ resource "aws_amplify_app" "my_app" {
                 - cd homepage
                 - npm install
                 - npm install dotenv  # Install the dotenv package
+                - npm install path-browserify
           build:
             commands:
                 - echo "REACT_APP_API_ENDPOINT= ${data.local_file.api_invoke_url.content}" >> .env.production
