@@ -8,7 +8,7 @@ import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
 
 
-import {Amplify} from 'aws-amplify';
+import { Auth , Amplify } from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css';
