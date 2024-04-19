@@ -171,12 +171,14 @@ function App() {
   return (
    <div>
    <Authenticator>
+   {({ signOut }) => (
+    <main>
     <div className='header'>
       <img src = {logo} alt='Logo'/>
       <h1>Attendance Automation</h1>
       {/* <button onClick={() => Auth.signOut()}>Sign Out</button> */}
 
-      {/* <Button onClick={() => Auth.signOut()}>Sign Out</Button> */}
+      <Button onClick={signOut}>Sign Out</Button>
     </div>
       
     <h2>Welcome, Admin!!</h2>
@@ -265,6 +267,8 @@ function App() {
           <Button color="secondary" onClick={toggleRegisterModal}>Cancel</Button>
         </ModalFooter>
       </Modal>
+      </main>
+       )}
       </Authenticator>
    </div>
   );
