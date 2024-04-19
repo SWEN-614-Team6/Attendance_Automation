@@ -8,7 +8,8 @@ import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
 
 
-import { Auth , Amplify } from 'aws-amplify';
+// import { Auth , Amplify } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css';
@@ -175,7 +176,7 @@ function App() {
       <h1>Attendance Automation</h1>
       {/* <button onClick={() => Auth.signOut()}>Sign Out</button> */}
 
-      <Button onClick={() => Auth.signOut()}>Sign Out</Button>
+      {/* <Button onClick={() => Auth.signOut()}>Sign Out</Button> */}
     </div>
       
     <h2>Welcome, Admin!!</h2>
