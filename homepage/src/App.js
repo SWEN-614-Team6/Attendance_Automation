@@ -7,6 +7,16 @@ import registrationImg from './image/registration.png';
 import addAttendanceImg from './image/addAttendance.png';
 import myfile from './output.txt';
 
+
+// import { Auth , Amplify } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
+import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
+
+import '@aws-amplify/ui-react/styles.css';
+import awsExports from './aws-exports';
+
+Amplify.configure(awsExports);
+
 // import BASE_URL from './config'; 
 const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 const uuid = require('uuid');
@@ -160,9 +170,15 @@ function App() {
 
   return (
    <div>
+   <Authenticator>
+   {({ signOut }) => (
+    <main>
     <div className='header'>
       <img src = {logo} alt='Logo'/>
       <h1>Attendance Automation</h1>
+      {/* <button onClick={() => Auth.signOut()}>Sign Out</button> */}
+
+      <Button onClick={signOut}>Sign Out</Button>
     </div>
       
     <h2>Welcome, Admin!!</h2>
@@ -251,9 +267,12 @@ function App() {
           <Button color="secondary" onClick={toggleRegisterModal}>Cancel</Button>
         </ModalFooter>
       </Modal>
-       
+      </main>
+       )}
+      </Authenticator>
    </div>
   );
 }
 
-export default App;
+// export default App;
+export default withAuthenticator(App);
