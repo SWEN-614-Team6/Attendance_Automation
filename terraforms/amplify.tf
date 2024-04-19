@@ -1,40 +1,22 @@
-data "local_file" "api_invoke_url" {
-  filename = "api_invoke_url.txt"
+# data "local_file" "api_invoke_url" {
+#   filename = "api_invoke_url.txt"
 
-  depends_on = [ null_resource.write_output_to_file ]
-}
+#   depends_on = [ null_resource.write_output_to_file ]
+# }
 
-data "local_file" "user_pool_client_id" {
-  filename = "user_pool_client_id.txt"
+# data "local_file" "user_pool_client_id" {
+#   filename = "user_pool_client_id.txt"
 
-  depends_on = [ null_resource.write_output_to_file ]
-}
+#   depends_on = [ null_resource.write_output_to_file ]
+# }
 
-data "local_file" "user_pool_id" {
-  filename = "user_pool_id.txt"
+# data "local_file" "user_pool_id" {
+#   filename = "user_pool_id.txt"
 
-  depends_on = [ null_resource.write_output_to_file ]
-}
+#   depends_on = [ null_resource.write_output_to_file ]
+# }
 
 # New datas
-data "local_file" "aws_cognito_identity_pool_id" {
-  filename = "aws_cognito_identity_pool_id.txt"
-
-  depends_on = [ null_resource.write_output_to_file ]
-}
-
-data "local_file" "aws_user_pools_id" {
-  filename = "aws_user_pools_id.txt"
-
-  depends_on = [ null_resource.write_output_to_file ]
-}
-
-data "local_file" "aws_user_pools_web_client_id" {
-  filename = "aws_user_pools_web_client_id.txt"
-
-  depends_on = [ null_resource.write_output_to_file ]
-}
-
 resource "aws_amplify_app" "my_app" {
   name       = "Attendance_Automation"
   repository = "https://github.com/SWEN-614-Team6/Attendance_Automation"

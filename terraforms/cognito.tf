@@ -303,6 +303,7 @@ output "cognito_parameters" {
 }
 
 
+#insert into files : 
 resource "null_resource" "write_aws_cognito_identity_pool_id" {
   provisioner "local-exec" {
     command = "echo '${aws_cognito_identity_pool.my_identity_pool.id}' | tr -d '\n' > aws_cognito_identity_pool_id.txt"
