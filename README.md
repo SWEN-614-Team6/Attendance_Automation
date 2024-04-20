@@ -15,10 +15,18 @@ The Facial Recognition-based Attendance Automation System is designed to streaml
 - Run `terraform init` to initialize Terraform.
 - Run `terraform plan` to see the execution plan.
 - Run `terraform apply` to apply the changes and provision the infrastructure.
-- To save deployed API URL Run `terraform output -json > ../homepage/src/output.txt`
 
 3. To run the frontend url navigate to 'homepage' directory.
 
+- Open AWS Amplify
+- Run Build & wait for the build and deploy
+- Once it is deployed, Using the link navigate to the website
+- Signup / Login
+- Once logged in Admin can add students and mark attendace of the students just by uploading images
+
+# Running on the local host
+
+- To run the frontend url navigate to 'homepage' directory.
 - w.r.t root directory type `cd homepage`
 - Run `npm install` to install dependencies
 - Run `npm start` to start the development server
