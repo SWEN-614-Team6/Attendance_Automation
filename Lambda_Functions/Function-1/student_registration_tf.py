@@ -44,7 +44,7 @@ def lambda_handler(event, context):
                 """.format(student_name = firstName + " "+ lastName, email = email)
             register_employee(faceId, firstName,lastName, emailId)
             #register_employee(faceId, firstName,lastName)
-            send_email(email,body_html,body_text,subject)
+            send_email(receiver,body_html,body_text,subject)
         return response
     except Exception as e:
         print(e)
@@ -78,10 +78,12 @@ def register_employee(faceId, firstName,lastName,email_id):
     )
 
 def send_email(Receiver, body_html, body_text, subject):
-    client = boto3.client('ses', region='us-east-1')
+    client = boto3.client('ses', region_name='us-east-1')
 
     try:
         response = client.send_email(
+            #Add env file later
+            Source = "naikpraneet44@gmail.com",
             Destination={
                 'ToAddresses': [
                     Receiver,
