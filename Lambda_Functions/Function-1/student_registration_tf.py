@@ -1,6 +1,7 @@
 import boto3
 # from ...homepage.PythonFunctions.SendEmail import send_email
 from botocore.exceptions import ClientError
+import os
 
 s3 = boto3.client('s3')
 rekognition = boto3.client('rekognition', region_name = 'us-east-1')
@@ -9,8 +10,9 @@ dynamodbTableName = 'class_student_tf'
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
+cdir = os.getcwd()
+filename = cdir.replace("terraforms", "SES_EMAIL.txt")
 # Please add the email di to test
-receiver = "naikpraneet44@gmail.com"
 subject = "Student Registered successfully for SWEN 514/614."
 body_text = "This is automated email body please do not use it for your reference."
 
@@ -30,7 +32,9 @@ def lambda_handler(event, context):
             firstName = name[0]
             lastName = name[1]
             emailId = name[2]
+
             email = emailId + "@g.rit.edu"
+            receiver = extract_email(filename)
             body_html = """<html>
     <head></head>
     <body>
@@ -51,6 +55,16 @@ def lambda_handler(event, context):
         print('Error processing employee image {} from bucket{}.'.format(key, bucket))
         raise e
     
+def extract_email(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    for line in lines:
+        if "SES_EMAIL=" in line:
+            email = line.split("=")[1].strip()
+            return email
+
+    # If "SES_EMAIL=" is not found, return None
+    return None
 
 def index_employee_image(bucket, key):
     response = rekognition.index_faces(
@@ -83,7 +97,7 @@ def send_email(Receiver, body_html, body_text, subject):
     try:
         response = client.send_email(
             #Add env file later
-            Source = "naikpraneet44@gmail.com",
+            Source = extract_email(filename),
             Destination={
                 'ToAddresses': [
                     Receiver,
