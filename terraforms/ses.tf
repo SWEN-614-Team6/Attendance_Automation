@@ -76,7 +76,7 @@
 #   value = aws_ses_email_identity.email_identity.email
 # }
 resource "aws_ses_email_identity" "email_identity" {
-  email = "naikpraneet44@gmail.com"
+  email = local.email_id
 }
 
 output "verified_email" {
