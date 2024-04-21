@@ -11,7 +11,7 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
 cdir = os.getcwd()
-filename = cdir.replace("terraforms", "SES_EMAIL.txt")
+filename = cdir.replace("Lambda_Functions\Function-1", "SES_EMAIL.txt")
 # Please add the email di to test
 subject = "Student Registered successfully for SWEN 514/614."
 body_text = "This is automated email body please do not use it for your reference."
