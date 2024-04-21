@@ -1,5 +1,6 @@
 import boto3
-# from SendEmail import send_email
+# from ...homepage.PythonFunctions.SendEmail import send_email
+from botocore.exceptions import ClientError
 
 s3 = boto3.client('s3')
 rekognition = boto3.client('rekognition', region_name = 'us-east-1')
@@ -9,20 +10,9 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 employeeTable = dynamodb.Table(dynamodbTableName)
 
 # Please add the email di to test
-# sender = "youremail"
-# receiver = "youremail"
-
-# subject = "Student Registered successfully."
-
-# body_text = "This is automated email body please do not use it for your reference."
-# body_html = """<html>
-#     <head></head>
-#     <body>
-#     <h1>Hey Hi...</h1>
-#     <p>Dear Student of class SWEN 514/614. Your image is successfully registered into the attendance system. Have Fun!</a>.</p>
-#     </body>
-#     </html>
-#                 """
+receiver = "naikpraneet44@gmail.com"
+subject = "Student Registered successfully for SWEN 514/614."
+body_text = "This is automated email body please do not use it for your reference."
 
 def lambda_handler(event, context):
     print('Hi event')
@@ -39,10 +29,22 @@ def lambda_handler(event, context):
             name = key.split('.')[0].split('_')
             firstName = name[0]
             lastName = name[1]
-            # emailId = name[2]
-            # register_employee(faceId, firstName,lastName, emailId)
-            register_employee(faceId, firstName,lastName)
-            # send_email(sender,receiver,body_html, body_text,subject)
+            emailId = name[2]
+            email = emailId + "@g.rit.edu"
+            body_html = """<html>
+    <head></head>
+    <body>
+    <h2>Dear Professor, </h2>
+    <p> {student_name} has been successsfully registered for class SWEN 514/614. Have Fun!</a>.</p>
+    <h3>Student Details:</h3>
+    <p>Name: {student_name}</p>
+    <p>Email: {email}</p>
+    </body>
+    </html>
+                """.format(student_name = firstName + " "+ lastName, email = email)
+            register_employee(faceId, firstName,lastName, emailId)
+            #register_employee(faceId, firstName,lastName)
+            send_email(email,body_html,body_text,subject)
         return response
     except Exception as e:
         print(e)
@@ -65,15 +67,48 @@ def index_employee_image(bucket, key):
     return response
 
 # def register_employee(faceId, firstName,lastName,email_id):
-def register_employee(faceId, firstName,lastName):
+def register_employee(faceId, firstName,lastName,email_id):
     employeeTable.put_item(
         Item = {
             'rekognitionId' : faceId,
             'firstName' : firstName,
-            'lastName' : lastName
-            # 'email' : email_id
+            'lastName' : lastName,
+            'email' : email_id
         }
     )
+
+def send_email(Receiver, body_html, body_text, subject):
+    client = boto3.client('ses', region='us-east-1')
+
+    try:
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    Receiver,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Data': body_html,
+                        'Charset': 'UTF-8'
+                    },
+                    'Text': {
+                        'Data': body_text,
+                        'Charset': 'UTF-8'
+                    },
+                },
+                'Subject': {
+                    'Data': subject,
+                    'Charset': 'UTF-8'
+                },
+            }
+        )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:", end=" ")
+        print(response['MessageId'])
 
 
 # import boto3
