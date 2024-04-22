@@ -22,6 +22,11 @@ resource "aws_lambda_function" "terraform_lambda_func" {
   runtime       = "python3.8"
   memory_size   = 500
   timeout       = 50
+  environment {
+    variables = {
+      SENDER_EMAIL = local.email_id
+    }
+  }
 }
 
 resource "aws_lambda_function" "terraform_lambda_func_authentication" {
