@@ -34,6 +34,7 @@ The Facial Recognition-based Attendance Automation System is designed to streaml
 4. Once the UI is loaded you can perform following functionalities :
 
 - Add new student by mentioning firstname, lastname and uploading an image.
+- To get emails of student registration put your personal email(not college id) in the SES_EMAIL.txt
 - Update Attendance by uploading class image and date of attendance.
 
 5. To tear down or destroy infrastructure navigate to 'terraforms' directory and
