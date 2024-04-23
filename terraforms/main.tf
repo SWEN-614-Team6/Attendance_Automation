@@ -39,6 +39,18 @@ resource "aws_s3_bucket" "class-images-tf" {
   }
 }
 
+data "local_file" "ses_email" {
+  filename = replace(path.cwd,"terraforms","SES_EMAIL.txt")
+}
+
+locals {
+  email_line = data.local_file.ses_email.content
+  email_id   = trim(split("=", local.email_line)[1], " ")
+}
+
+output "email_id" {
+  value = local.email_id
+}
 
 # resource "aws_s3_object" "upload-dataset-files-bucket" {
 #   bucket = aws_s3_bucket.swen614-dataset.id

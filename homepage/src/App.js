@@ -1,111 +1,323 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-import Home from './Home';
-import {Amplify} from 'aws-amplify';
-import CryptoJS from 'crypto-js';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+} from "reactstrap";
+import React from "react";
+import "./App.css";
+import { useState, useEffect } from "react";
+import logo from "./image/logo.png";
+import registrationImg from "./image/registration.png";
+import addAttendanceImg from "./image/addAttendance.png";
+import myfile from "./output.txt";
 
-// Define AWS Amplify configuration directly
+// import { Auth , Amplify } from 'aws-amplify';
+import { Amplify } from "aws-amplify";
+import { Authenticator, withAuthenticator } from "@aws-amplify/ui-react";
 
-const awsmobile = {
-  "aws_project_region": process.env.REACT_APP_AWS_REGION,
-  "aws_cognito_identity_pool_id": process.env.REACT_APP_IDENTITY_POOL_ID,
-  "aws_cognito_region": process.env.REACT_APP_AWS_REGION,
-  "aws_user_pools_id": process.env.REACT_APP_USER_POOLS_ID,
-  "aws_user_pools_web_client_id": process.env.REACT_APP_USER_POOLS_CLIENT_ID,
-  "oauth": {},
-  "aws_cognito_username_attributes": [
-      "EMAIL"
-  ],
-  "aws_cognito_social_providers": [],
-  "aws_cognito_signup_attributes": [
-      "EMAIL"
-  ],
-  "aws_cognito_mfa_configuration": "OFF",
-  "aws_cognito_mfa_types": [
-      "SMS"
-  ],
-  "aws_cognito_password_protection_settings": {
-      "passwordPolicyMinLength": 8,
-      "passwordPolicyCharacters": []
-  },
-  "aws_cognito_verification_mechanisms": [
-      "EMAIL"
-  ]
-};
+import "@aws-amplify/ui-react/styles.css";
+import awsExports from "./aws-exports";
 
-// Configure Amplify with awsConfig
-Amplify.configure(awsmobile);
+Amplify.configure(awsExports);
+
+// import BASE_URL from './config';
+const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+const uuid = require("uuid");
 
 function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  console.log("API-", apiUrl);
+
+  const [image, setImage] = useState("");
+  const [classImage, setclassImage] = useState("");
+
+  const [registerModal, setRegisterModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+
+  const [text_message, settext_message] = useState("");
+  const [new_student_msg, setnew_student_msg] = useState("");
+
+  const [studentlist, setstudentlist] = useState([]);
+
+  const [absent_studentlist, set_absent_studentlist] = useState([]);
+
+  const [absent_student_message, set_absent_student_message] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState("");
+  const [BASE_URL, setBASE_URL] = useState(null);
 
   useEffect(() => {
-    // Function to calculate SECRET_HASH
-    const calculateSecretHash = (clientId, clientSecret, username) => {
-      const secret = `${clientId}${username}`;
-      return CryptoJS.HmacSHA256(secret, clientSecret).toString(CryptoJS.enc.Base64);
+    const fetchJsonData = async () => {
+      try {
+        const response = await fetch(myfile);
+        if (!response.ok) {
+          throw new Error("Failed to fetch JSON");
+        }
+        const data = await response.json();
+        setBASE_URL(data.API_invoke_url.value);
+        console.log(data.API_invoke_url.value);
+      } catch (error) {
+        console.error("Error fetching JSON:", error);
+      }
     };
 
-    // Calculate SECRET_HASH
-    const clientId = process.env.REACT_APP_USER_POOLS_CLIENT_ID;
-    const clientSecret = process.env.REACT_APP_USER_POOLS_CLIENT_SECRET;
-    const secretHash = calculateSecretHash(clientId, clientSecret, username);
+    fetchJsonData();
+  }, []);
 
-    // Override Amplify.Auth.signIn to include SECRET_HASH
-    const signIn = Amplify.Auth.signIn.bind(Amplify.Auth);
-    Amplify.Auth.signIn = () => {
-      return signIn(username, password, secretHash);
-    };
-  }, [username, password]);
+  const toggleUpdateModal = () => {
+    setUpdateModal(!updateModal);
+    settext_message("");
+    setSelectedDate("");
+    setstudentlist([]);
 
-  const handleSignIn = () => {
-    // Trigger the signIn action
-    Amplify.Auth.signIn();
+    set_absent_student_message("");
+    set_absent_studentlist([]);
   };
 
+  const toggleRegisterModal = () => {
+    setRegisterModal(!registerModal);
+    setnew_student_msg("");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const firstName = event.target.first_name.value;
+    const lastName = event.target.last_name.value;
+    const email_Id = event.target.email_id.value;
+    const fileExtension = image.name.split(".").pop();
+    event.target.first_name.value = "";
+    event.target.last_name.value = "";
+    event.target.email_id.value = "";
+
+    const visitorImageName = `${firstName}_${lastName}_${email_Id}.${fileExtension}`;
+
+    // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
+    fetch(`${apiUrl}/new-student-registration-tf/${visitorImageName}`, {
+      method: "PUT",
+      headers: {
+        // 'Content-Type' : 'image/jpeg'
+        "Content-Type": `image/${fileExtension}`,
+      },
+      body: image,
+    }).catch((error) => {
+      console.error(error);
+    });
+    setnew_student_msg("New Student added successfully");
+  };
+
+  const handleUpdateSubmit = (event) => {
+    event.preventDefault();
+    const visitorImageName = uuid.v4();
+
+    const newfileExtension = classImage.name.split(".").pop();
+    //  fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/class/class-photos-bucket/${visitorImageName}`, {
+    fetch(`${apiUrl}/class/class-images-tf/${visitorImageName}`, {
+      // Construct the API endpoint using the base URL
+      method: "PUT",
+      headers: {
+        "Content-Type": `image/${newfileExtension}`,
+        // 'Origin': 'http://localhost:3000'
+      },
+      body: classImage,
+    })
+      .then(async () => {
+        const response = await authenticate(visitorImageName, newfileExtension);
+        console.log(response);
+        if (response.status === "Success") {
+          console.log(response.mylist);
+          setstudentlist(response.mylist);
+          settext_message(response.message);
+          set_absent_student_message(response.absent_message);
+          set_absent_studentlist(response.absent_students);
+          // settext_message(`${response['message']} :`);
+        } else {
+          settext_message("Attendance Updation Failed");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  async function authenticate(visitorImageName, newfileExtension) {
+    //   const requestUrl = 'https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/studentidentify?'+ new URLSearchParams({
+    //    objectKey : `${visitorImageName}`,
+    //    date_of_attendance : `${selectedDate}`
+    //  })
+    const requestUrl = `${apiUrl}/studentidentify?${new URLSearchParams({
+      // Construct the API endpoint using the base URL
+      objectKey: `${visitorImageName}`,
+      date_of_attendance: `${selectedDate}`,
+    })}`;
+    return await fetch(requestUrl, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        //  'Origin': 'http://localhost:3000'
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => console.error(error));
+  }
+
   return (
-    <div className="App">
+    <div>
+      <Authenticator>
         {({ signOut }) => (
           <main>
-            <header className='App-header'>
-              {/* Quiz Component */}
-              { <Home /> }
-              {/* Sign In Form */}
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Username" 
-                  value={username} 
-                  onChange={(e) => setUsername(e.target.value)} 
-                />
-                <input 
-                  type="password" 
-                  placeholder="Password" 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
-                />
-                <button onClick={handleSignIn}>Sign In</button>
+            <div className="header">
+              <img src={logo} alt="Logo" />
+              <h1>Attendance Automation</h1>
+              {/* <button onClick={() => Auth.signOut()}>Sign Out</button> */}
+
+              <Button onClick={signOut}>Sign Out</Button>
+            </div>
+
+            <h2>Welcome, Admin!!</h2>
+            <div className="buttons">
+              <div className="b">
+                <Button
+                  className="circular-button"
+                  onClick={toggleRegisterModal}>
+                  <img src={registrationImg} alt="registration" />
+                </Button>
+                <div>Registration</div>
               </div>
-              {/* Sign Out Button */}
-              <button 
-                onClick={signOut} 
-                style={{ 
-                  margin: '20px', 
-                  fontSize: '0.8rem', 
-                  padding: '5px 10px', 
-                  marginTop: '20px'
-                }}
-              >
-                Sign Out
-              </button>
-            </header>
+              <div className="b">
+                <Button className="circular-button" onClick={toggleUpdateModal}>
+                  <img src={addAttendanceImg} alt="addAttandance" />
+                </Button>
+                <div>Mark Attendance</div>
+              </div>
+            </div>
+
+            <Modal isOpen={updateModal} toggle={toggleUpdateModal}>
+              <ModalHeader color="black" toggle={toggleUpdateModal}>
+                Upload Attendance
+              </ModalHeader>
+
+              <ModalBody>
+                <Form onSubmit={handleUpdateSubmit}>
+                  <FormGroup>
+                    <Label for="upload_photo">Upload Class Photo</Label>
+                    <Input
+                      type="file"
+                      name="upload_photo"
+                      onChange={(e) => setclassImage(e.target.files[0])}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label for="date">Select Date</Label>
+                    <Input
+                      type="date"
+                      name="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                  </FormGroup>
+
+                  <h3>{text_message}</h3>
+                  {studentlist.map((mylist, index) => (
+                    <p>
+                      {mylist.firstName} {mylist.lastName}
+                    </p>
+                  ))}
+
+                  <h4>{absent_student_message}</h4>
+                  {absent_studentlist.map((mylist, index) => (
+                    <p>
+                      {mylist.firstName} {mylist.lastName}
+                    </p>
+                  ))}
+
+                  <Button color="primary" type="submit">
+                    Submit
+                  </Button>
+                </Form>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={toggleUpdateModal}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={registerModal} toggle={toggleRegisterModal}>
+              <ModalHeader toggle={toggleRegisterModal}>
+                Add Student's Details
+              </ModalHeader>
+              <ModalBody>
+                <Form onSubmit={handleSubmit}>
+                  <FormGroup>
+                    <Label for="first_name">First Name</Label>
+                    <Input
+                      type="text"
+                      name="first_name"
+                      id="first_name"
+                      placeholder="Enter first name"
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label for="last_name">Last Name</Label>
+                    <Input
+                      type="text"
+                      name="last_name"
+                      id="last_name"
+                      placeholder="Enter last name"
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label for="email_id">RIT Username</Label>
+                    <Input
+                      type="text"
+                      name="email_id"
+                      id="email_id"
+                      placeholder="Enter RIT Username"
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Input
+                      type="file"
+                      name="image"
+                      onChange={(e) => setImage(e.target.files[0])}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <h3>{new_student_msg}</h3>
+                  </FormGroup>
+
+                  <Button color="primary" type="submit">
+                    Submit
+                  </Button>
+                </Form>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={toggleRegisterModal}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
           </main>
         )}
+      </Authenticator>
     </div>
   );
 }
 
+// export default App;
 export default withAuthenticator(App);

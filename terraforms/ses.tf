@@ -1,6 +1,8 @@
+# Implementation of SES Service 
+
 # # Verify an email address in AWS SES
 # resource "aws_ses_email_identity" "email_identity" {
-#   email = "atharvamchiplunkar12@gmail.com"
+#   email = "naikpraneet44@gmail.com"
 # }
 
 # # IAM role for Lambda function
@@ -47,20 +49,14 @@
 #   policy_arn = aws_iam_policy.lambda_policy_for_ses.arn
 # }
 
-# data "archive_file" "zip_the_send_email_code" {
-#   type        = "zip"
-#   source_dir  = "${local.python_files}"
-#   output_path = "${local.python_files}/sendEmail_tf.zip" 
-# }
 # # Lambda function to send emails
 # resource "aws_lambda_function" "send_email_lambda" {
-#   filename         = data.archive_file.zip_the_send_email_code.output_path
-#   function_name    = "send_email_tf"
+#   filename         = "Lambda_Functions/Function-1/student_registration_tf.zip"
+#   function_name    = "send_email"
 #   role             = aws_iam_role.lambda_role_for_ses.arn
 #   handler          = "lambda_function.lambda_handler"
 #   runtime          = "python3.8"
-#   memory_size      = 500
-#   timeout          = 50
+#   source_code_hash = filebase64sha256("path/to/your/lambda_function.zip")
 # }
 
 # # Permission for SES to trigger Lambda function
@@ -79,3 +75,10 @@
 # output "verified_email" {
 #   value = aws_ses_email_identity.email_identity.email
 # }
+resource "aws_ses_email_identity" "email_identity" {
+  email = local.email_id
+}
+
+output "verified_email" {
+  value = aws_ses_email_identity.email_identity.email
+}
