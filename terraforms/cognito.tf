@@ -93,14 +93,3 @@ resource "aws_iam_role_policy_attachment" "cognito_policy_attachment" {
 
 
 
-
-
-output "cognito_parameters" {
-  value = {
-    aws_cognito_identity_pool_id = aws_cognito_identity_pool.my_identity_pool.id
-    aws_user_pools_id            = aws_cognito_user_pool.my_user_pool.id
-    aws_user_pools_web_client_id = aws_cognito_user_pool_client.my_user_pool_client.id
-  }
-}
-
-
