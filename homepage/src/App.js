@@ -15,7 +15,10 @@ import { useState, useEffect } from "react";
 import logo from "./image/logo.png";
 import registrationImg from "./image/registration.png";
 import addAttendanceImg from "./image/addAttendance.png";
+<<<<<<< HEAD
 import myfile from "./output.txt";
+=======
+>>>>>>> acdev
 
 // import { Auth , Amplify } from 'aws-amplify';
 import { Amplify } from "aws-amplify";
@@ -43,6 +46,7 @@ function App() {
   const [new_student_msg, setnew_student_msg] = useState("");
 
   const [studentlist, setstudentlist] = useState([]);
+<<<<<<< HEAD
 
   const [absent_studentlist, set_absent_studentlist] = useState([]);
 
@@ -69,6 +73,16 @@ function App() {
     fetchJsonData();
   }, []);
 
+=======
+
+  const [absent_studentlist, set_absent_studentlist] = useState([]);
+
+  const [absent_student_message, set_absent_student_message] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState("");
+
+
+>>>>>>> acdev
   const toggleUpdateModal = () => {
     setUpdateModal(!updateModal);
     settext_message("");
@@ -89,11 +103,21 @@ function App() {
 
     const firstName = event.target.first_name.value;
     const lastName = event.target.last_name.value;
+<<<<<<< HEAD
     const fileExtension = image.name.split(".").pop();
     event.target.first_name.value = "";
     event.target.last_name.value = "";
 
     const visitorImageName = `${firstName}_${lastName}.${fileExtension}`;
+=======
+    const email_Id = event.target.email_id.value;
+    const fileExtension = image.name.split(".").pop();
+    event.target.first_name.value = "";
+    event.target.last_name.value = "";
+    event.target.email_id.value = "";
+
+    const visitorImageName = `${firstName}_${lastName}_${email_Id}.${fileExtension}`;
+>>>>>>> acdev
 
     // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
     fetch(`${apiUrl}/new-student-registration-tf/${visitorImageName}`, {
@@ -278,6 +302,19 @@ function App() {
                   </FormGroup>
 
                   <FormGroup>
+<<<<<<< HEAD
+=======
+                    <Label for="email_id">RIT Username</Label>
+                    <Input
+                      type="text"
+                      name="email_id"
+                      id="email_id"
+                      placeholder="Enter RIT Username"
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+>>>>>>> acdev
                     <Input
                       type="file"
                       name="image"
