@@ -15,7 +15,6 @@ import { useState, useEffect } from "react";
 import logo from "./image/logo.png";
 import registrationImg from "./image/registration.png";
 import addAttendanceImg from "./image/addAttendance.png";
-import myfile from "./output.txt";
 
 // import { Auth , Amplify } from 'aws-amplify';
 import { Amplify } from "aws-amplify";

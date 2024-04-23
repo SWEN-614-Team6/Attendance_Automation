@@ -12,11 +12,6 @@ provider "aws" {
 
 
 
-output "new_path_output" {
-  value = local.dataset_path
-}
-
-
 #Creating s3 bucket to upload the student image in a s3 bucket.
 resource "aws_s3_bucket" "new-student-registration-tf" {
   bucket = "new-student-registration-tf"
@@ -52,14 +47,3 @@ output "email_id" {
   value = local.email_id
 }
 
-# resource "aws_s3_object" "upload-dataset-files-bucket" {
-#   bucket = aws_s3_bucket.swen614-dataset.id
-#   for_each = fileset(local.dataset_path,"*")
-#   key    = each.value
-#   source = "${local.dataset_path}/${each.value}"
-
-#   # The filemd5() function is available in Terraform 0.11.12 and later
-#   # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
-#   etag = filemd5("${local.dataset_path}/${each.value}")
-# #   
-# }
