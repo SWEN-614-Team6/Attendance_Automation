@@ -19,8 +19,6 @@ resource "aws_amplify_app" "my_app" {
                 - echo "REACT_APP_aws_user_pools_id=${aws_cognito_user_pool.my_user_pool.id}" >> .env.production
                 - echo "REACT_APP_aws_user_pools_web_client_id=${aws_cognito_user_pool_client.my_user_pool_client.id}" >> .env.production
                 - npm run build
-                - pwd
-                - ls
         artifacts:
             baseDirectory: homepage/build   
             files:
