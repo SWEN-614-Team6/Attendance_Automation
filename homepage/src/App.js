@@ -48,25 +48,7 @@ function App() {
   const [absent_student_message, set_absent_student_message] = useState("");
 
   const [selectedDate, setSelectedDate] = useState("");
-  const [BASE_URL, setBASE_URL] = useState(null);
 
-  useEffect(() => {
-    const fetchJsonData = async () => {
-      try {
-        const response = await fetch(myfile);
-        if (!response.ok) {
-          throw new Error("Failed to fetch JSON");
-        }
-        const data = await response.json();
-        setBASE_URL(data.API_invoke_url.value);
-        console.log(data.API_invoke_url.value);
-      } catch (error) {
-        console.error("Error fetching JSON:", error);
-      }
-    };
-
-    fetchJsonData();
-  }, []);
 
   const toggleUpdateModal = () => {
     setUpdateModal(!updateModal);
