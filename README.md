@@ -9,7 +9,7 @@ The Facial Recognition-based Attendance Automation System is designed to streaml
 ### 1. Clone the git repository
    `git clone https://github.com/SWEN-614-Team6/Attendance_Automation.git`
 
-### 2. To run the terraform script navigate to 'terraforms' directory
+### 2. To run the terraform script navigate to the 'terraforms' directory
 
 - type `cd terraforms`
 - Run `terraform init` to initialize Terraform.
@@ -34,9 +34,9 @@ The Facial Recognition-based Attendance Automation System is designed to streaml
 - Signup / Login
 - Once logged in Admin can add students and mark attendance of the students just by uploading images
 - Add new student by mentioning firstname, lastname and uploading an image.
-- To get emails of student registration put your personal email(not college id) in the `SES_EMAIL.txt`
-- Update Attendance by uploading class image and date of attendance.
+- To get emails of student registration put your personal email(not college ID) in the `SES_EMAIL.txt` before running the Terraform scripts.
+- Update Attendance by uploading a group class image and date of attendance.
 
-### 5. To tear down or destroy infrastructure navigate to 'terraforms' directory
+### 5. To tear down or destroy infrastructure navigate to the 'terraforms' directory
 
 - Run `terraform destroy`
