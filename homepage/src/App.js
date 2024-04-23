@@ -15,10 +15,6 @@ import { useState, useEffect } from "react";
 import logo from "./image/logo.png";
 import registrationImg from "./image/registration.png";
 import addAttendanceImg from "./image/addAttendance.png";
-<<<<<<< HEAD
-import myfile from "./output.txt";
-=======
->>>>>>> acdev
 
 // import { Auth , Amplify } from 'aws-amplify';
 import { Amplify } from "aws-amplify";
@@ -46,34 +42,6 @@ function App() {
   const [new_student_msg, setnew_student_msg] = useState("");
 
   const [studentlist, setstudentlist] = useState([]);
-<<<<<<< HEAD
-
-  const [absent_studentlist, set_absent_studentlist] = useState([]);
-
-  const [absent_student_message, set_absent_student_message] = useState("");
-
-  const [selectedDate, setSelectedDate] = useState("");
-  const [BASE_URL, setBASE_URL] = useState(null);
-
-  useEffect(() => {
-    const fetchJsonData = async () => {
-      try {
-        const response = await fetch(myfile);
-        if (!response.ok) {
-          throw new Error("Failed to fetch JSON");
-        }
-        const data = await response.json();
-        setBASE_URL(data.API_invoke_url.value);
-        console.log(data.API_invoke_url.value);
-      } catch (error) {
-        console.error("Error fetching JSON:", error);
-      }
-    };
-
-    fetchJsonData();
-  }, []);
-
-=======
 
   const [absent_studentlist, set_absent_studentlist] = useState([]);
 
@@ -82,7 +50,6 @@ function App() {
   const [selectedDate, setSelectedDate] = useState("");
 
 
->>>>>>> acdev
   const toggleUpdateModal = () => {
     setUpdateModal(!updateModal);
     settext_message("");
@@ -103,13 +70,6 @@ function App() {
 
     const firstName = event.target.first_name.value;
     const lastName = event.target.last_name.value;
-<<<<<<< HEAD
-    const fileExtension = image.name.split(".").pop();
-    event.target.first_name.value = "";
-    event.target.last_name.value = "";
-
-    const visitorImageName = `${firstName}_${lastName}.${fileExtension}`;
-=======
     const email_Id = event.target.email_id.value;
     const fileExtension = image.name.split(".").pop();
     event.target.first_name.value = "";
@@ -117,7 +77,6 @@ function App() {
     event.target.email_id.value = "";
 
     const visitorImageName = `${firstName}_${lastName}_${email_Id}.${fileExtension}`;
->>>>>>> acdev
 
     // fetch(`https://chcxp4zpi8.execute-api.us-east-1.amazonaws.com/dev5/register-new-student/${visitorImageName}`, {
     fetch(`${apiUrl}/new-student-registration-tf/${visitorImageName}`, {
@@ -302,8 +261,6 @@ function App() {
                   </FormGroup>
 
                   <FormGroup>
-<<<<<<< HEAD
-=======
                     <Label for="email_id">RIT Username</Label>
                     <Input
                       type="text"
@@ -314,7 +271,6 @@ function App() {
                   </FormGroup>
 
                   <FormGroup>
->>>>>>> acdev
                     <Input
                       type="file"
                       name="image"
