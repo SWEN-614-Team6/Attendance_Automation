@@ -1,7 +1,7 @@
 resource "aws_amplify_app" "my_app" {
   name       = "Attendance_Automation"
   repository = "https://github.com/SWEN-614-Team6/Attendance_Automation"
-  access_token = var.token
+  #access_token = {github_token} add github token for access
 
   //Configure the branch that Amplify will use
   build_spec = <<-EOT
